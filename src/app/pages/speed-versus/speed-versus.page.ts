@@ -6,7 +6,7 @@ import { FormattedPokemon, UsageSmogonService } from '../../http/requests/usage-
 import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { PokemonService } from 'src/app/http/requests/pokemon/pokemon.service';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-speed-versus',
   templateUrl: './speed-versus.page.html',
@@ -19,7 +19,7 @@ export class SpeedVersusPage implements OnInit {
   pokeRight: any;
   is2PokeLoaded: boolean = false;
 
-  constructor(private pokemonService: PokemonService, private usageSmogonService: UsageSmogonService) {}
+  constructor(private pokemonService: PokemonService, private usageSmogonService: UsageSmogonService, private router: Router) {}
 
   pokemonTopUsage: FormattedPokemon[] = [];
 
@@ -49,4 +49,7 @@ export class SpeedVersusPage implements OnInit {
     });
   }
 
+  backToMenu(){
+    this.router.navigateByUrl('/training-menu');
+  }
 }

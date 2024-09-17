@@ -19,6 +19,7 @@ export interface FormattedPokemon {
 })
 export class UsageSmogonService {
   private baseUrl = 'https://www.smogon.com/stats/';
+  public usages: FormattedPokemon[] | undefined;
 
   constructor(
     private httpService:HttpService,
@@ -27,6 +28,9 @@ export class UsageSmogonService {
   ) { }
 
   getUsageData(): Observable<FormattedPokemon[]> {
+    if(this.usages){
+      return of(this.usages);
+    }
     const date = new Date();
     date.setMonth(date.getMonth() - 1);
     const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
@@ -64,7 +68,8 @@ export class UsageSmogonService {
   // ----------------------------------------------------------------------------------------------
 
   private formatUsage(content: string): FormattedPokemon[] {
-    return content.split('\n').filter(this.isPokemonLine).map(line => this.formatPokemonLine(line)).filter((poke)=> poke.rawUsage > 1500);
+    this.usages = content.split('\n').filter(this.isPokemonLine).map(line => this.formatPokemonLine(line)).filter((poke)=> poke.rawUsage > 1500);
+    return this.usages;
   }
 
   private isPokemonLine(line: string): boolean {

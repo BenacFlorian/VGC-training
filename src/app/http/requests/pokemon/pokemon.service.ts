@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from '../../http.service';
-import { catchError, forkJoin, map, Observable, of } from 'rxjs';
+import { catchError, forkJoin, map, Observable, of, EMPTY } from 'rxjs';
 import { FormattedPokemon } from '../usage-smogon/usage-smogon.service';
 
 export interface Pokemon {
@@ -21,32 +21,28 @@ export interface Pokemon {
 })
 export class PokemonService {
   private baseUrl = 'https://pokeapi.co/api/v2/pokemon';
-  private indexAlreadyChecked: number[] = [];
 
   constructor(private httpService: HttpService) { }
 
-  public fetchOneValidPokemon(pokemonTopUsage: FormattedPokemon[]): Observable<string | any> {
-
+  public fetchOneValidPokemon(pokemonTopUsage: FormattedPokemon[]): Observable<any> {
     const indexPokeRandom = this.getOneRandomPokemon(pokemonTopUsage);
     const poke = pokemonTopUsage[indexPokeRandom];
 
     return this.getPokemon(poke.name.toLowerCase()).pipe(
-        catchError(error => {
-          console.log(`Erreur pour le Pokémon de gauche (${poke.name}):`, error);
-          return of('');  // Retourne une chaîne vide au lieu de null
-        })
-    ).pipe(
-      map(([leftPokemon, rightPokemon]) => {
-        if (leftPokemon && rightPokemon) {
-          return [leftPokemon, rightPokemon];
+      catchError(error => {
+        console.log(`Erreur pour le Pokémon (${poke.name}):`, error);
+        return of('');  // Utiliser EMPTY au lieu de of('')
+      }),
+      map(pokemon => {
+        if (pokemon) {
+          return pokemon;
         } else {
-          throw new Error('Un ou les deux Pokémon sont invalides');
+          throw new Error('Le Pokémon est invalide');
         }
       }),
       catchError(() => this.fetchOneValidPokemon(pokemonTopUsage))
     );
   }
-
 
   public fetchTwoValidPokemon(pokemonTopUsage: FormattedPokemon[]): Observable<string | any[]> {
 

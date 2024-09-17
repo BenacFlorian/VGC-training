@@ -4,6 +4,7 @@ import { SpeedQuizComponent } from 'src/app/components/speed-quiz/speed-quiz.com
 import { PokemonService } from 'src/app/http/requests/pokemon/pokemon.service';
 import { FormattedPokemon, UsageSmogonService } from 'src/app/http/requests/usage-smogon/usage-smogon.service';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-speed-quiz',
   templateUrl: './speed-quiz.page.html',
@@ -17,7 +18,7 @@ export class SpeedQuizPage implements OnInit {
   public poke: any;
   public isPokeLoaded: boolean = false;
 
-  constructor(private pokemonService: PokemonService, private usageSmogonService: UsageSmogonService) { }
+  constructor(private pokemonService: PokemonService, private usageSmogonService: UsageSmogonService, private router: Router) { }
 
   ngOnInit() {
     this.usageSmogonService.getUsageData().subscribe({
@@ -41,6 +42,9 @@ export class SpeedQuizPage implements OnInit {
       this.poke = data;
       this.isPokeLoaded = true;
     });
+  }
+  backToMenu(){
+    this.router.navigateByUrl('/training-menu');
   }
 
 }

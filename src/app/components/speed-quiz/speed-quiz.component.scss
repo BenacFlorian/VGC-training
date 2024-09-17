@@ -1,0 +1,58 @@
+.column-speed-versus {
+    display: flex;
+    height: 100%;
+    width:100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.input-guess{
+    width: 80%;
+}
+
+
+.guess-row {
+    display: flex;
+    align-items: center;
+    height: 60px; // Ajustez cette valeur selon vos besoins
+
+    .input-col, .button-col {
+        display: flex;
+        align-items: center;
+    }
+
+    .input-guess {
+        width: 100%;
+        height: 40px; // Ajustez cette valeur selon vos besoins
+        padding: 0 10px;
+        font-size: 16px;
+    }
+
+    ion-button {
+        width: 100%;
+        height: 40px; // Ajustez cette valeur selon vos besoins
+        margin: 0;
+    }
+}
+
+.speed{
+    width: 100%;
+    font-size: 1rem;
+    border-radius: 1rem;
+    padding: 0.1rem;
+}
+
+.good-answer-bg {
+    background-color: #1987546e !important;
+    --background: #1987546e !important;
+}
+.bad-answer-bg {
+    background-color: #dc354670 !important;
+    --background: #dc354670 !important;
+}
+.next-button {
+    ion-button {
+        width: 33%; // Permet au bouton de s'ajuster à son contenu
+        float: right; // Aligne le bouton à droite
+    }
+}

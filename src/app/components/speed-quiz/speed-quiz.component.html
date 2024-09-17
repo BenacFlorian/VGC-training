@@ -1,21 +1,37 @@
 <ion-grid>
+  <ion-row *ngIf="!!score && (score.nbGoodAnswer+score.nbBadAnswer) > 0">
+    <ion-col size="3" class="column-speed-versus">
+    </ion-col>
+    <ion-col size="6" class="text-center column-speed-versus">
+      {{score.percentGoodAnswer}}% of good answers
+    </ion-col>
+  </ion-row>
   <ion-row>
-    <ion-col size="4" class="column-speed-versus">
-      <ion-row class="align-items-center" style="margin-left: 10%;">
+    <ion-col size="12" class="column-speed-versus">
+      <ion-row class="align-items-center">
         <img [src]="src">
       </ion-row>
     </ion-col>
   </ion-row>
 
   <ion-row>
-    <ion-col size="4" class="column-speed-versus">
-      <p class="mt-3 speed text-center" *ngIf="isAnswered">{{speed}}</p>
+    <ion-col size="12" class="column-speed-versus">
+      <p class="mt-3 speed text-center" *ngIf="isAnswered"[ngClass]="{'good-answer-bg': hasRightAnswer, 'bad-answer-bg': !hasRightAnswer }">{{speed}}</p>
     </ion-col>
   </ion-row>
 
-  <ion-row class="mt-2" *ngIf="isAnswered">
+  <ion-row class="guess-row">
+    <ion-col size="8" class="input-col">
+      <input class="input-guess" type="number" placeholder="Enter speed" [(ngModel)]="userGuess" (keyup.enter)="validateGuess()">
+    </ion-col>
+    <ion-col size="4" class="button-col">
+      <ion-button expand="block" (click)="validateGuess()">Submit</ion-button>
+    </ion-col>
+  </ion-row>
+
+  <ion-row class="mt-4" *ngIf="isAnswered">
     <ion-col size="12" class="ion-text-end next-button col-12" style="padding: 0;">
-      <ion-button class="name light-gray-button col-4" (click)="reinitQuiz()"style="margin:0;">Next</ion-button>
+      <ion-button class="name light-gray-button col-4" (click)="reinitQuiz()"style="margin:0; margin-bottom: 4%;">Next</ion-button>
     </ion-col>
   </ion-row>
 </ion-grid>

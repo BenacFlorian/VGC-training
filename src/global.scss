@@ -104,7 +104,9 @@ body {
     --color: black;
 }
 
-
+.dib{
+  display: inline-block;
+}
 .text-center {
     text-align: center;
 }
@@ -119,4 +121,10 @@ body {
 
 .col-12 {
     width: 100%;
+}
+
+.button-back{
+  position: absolute;
+  top: 0;
+  left: 0;
 }
