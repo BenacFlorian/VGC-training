@@ -1,0 +1,122 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "@ionic/angular/css/normalize.css";
+@import "@ionic/angular/css/structure.css";
+@import "@ionic/angular/css/typography.css";
+@import "@ionic/angular/css/display.css";
+
+/* Optional CSS utils that can be commented out */
+@import "@ionic/angular/css/padding.css";
+@import "@ionic/angular/css/float-elements.css";
+@import "@ionic/angular/css/text-alignment.css";
+@import "@ionic/angular/css/text-transformation.css";
+@import "@ionic/angular/css/flex-utils.css";
+
+/**
+ * Ionic Dark Mode
+ * -----------------------------------------------------
+ * For more info, please see:
+ * https://ionicframework.com/docs/theming/dark-mode
+ */
+
+/* @import "@ionic/angular/css/palettes/dark.always.css"; */
+/* @import "@ionic/angular/css/palettes/dark.class.css"; */
+// @import '@ionic/angular/css/palettes/dark.system.css';
+
+// @import '~@angular/material/prebuilt-themes/indigo-pink.css';
+// @import '~@angular/material/theming';
+
+body {
+  background-image: url('/assets/background.jpg') ;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh; // Ajout de cette ligne
+}
+
+// Ajoutez ces classes utilitaires
+.mt-1 { margin-top: 0.25rem !important; }
+.mt-2 { margin-top: 0.5rem !important; }
+.mt-3 { margin-top: 1rem !important; }
+.mt-4 { margin-top: 1.5rem !important; }
+.mt-5 { margin-top: 3rem !important; }
+
+// Vous pouvez ajouter d'autres classes utilitaires ici
+.mb-1 { margin-bottom: 0.25rem !important; }
+.mb-2 { margin-bottom: 0.5rem !important; }
+.mb-3 { margin-bottom: 1rem !important; }
+.mb-4 { margin-bottom: 1.5rem !important; }
+.mb-5 { margin-bottom: 3rem !important; }
+
+.p-1 { padding: 0.25rem !important; }
+.p-2 { padding: 0.5rem !important; }
+.p-3 { padding: 1rem !important; }
+.p-4 { padding: 1.5rem !important; }
+.p-5 { padding: 3rem !important; }
+
+// ... autres classes utilitaires selon vos besoins ...
+
+// Classes de grille Ionic
+.ion-col-12 { --ion-grid-column-size: 100%; }
+.ion-col-6 { --ion-grid-column-size: 50%; }
+.ion-col-4 { --ion-grid-column-size: 33.3333%; }
+.ion-col-3 { --ion-grid-column-size: 25%; }
+
+// Classes responsive
+@media (min-width: 576px) {
+  .ion-col-sm-12 { --ion-grid-column-size: 100%; }
+  .ion-col-sm-6 { --ion-grid-column-size: 50%; }
+  .ion-col-sm-4 { --ion-grid-column-size: 33.3333%; }
+  .ion-col-sm-3 { --ion-grid-column-size: 25%; }
+}
+
+@media (min-width: 768px) {
+  .ion-col-md-12 { --ion-grid-column-size: 100%; }
+  .ion-col-md-6 { --ion-grid-column-size: 50%; }
+  .ion-col-md-4 { --ion-grid-column-size: 33.3333%; }
+  .ion-col-md-3 { --ion-grid-column-size: 25%; }
+}
+
+@media (min-width: 992px) {
+  .ion-col-lg-12 { --ion-grid-column-size: 100%; }
+  .ion-col-lg-6 { --ion-grid-column-size: 50%; }
+  .ion-col-lg-4 { --ion-grid-column-size: 33.3333%; }
+  .ion-col-lg-3 { --ion-grid-column-size: 25%; }
+}
+
+.light-gray-button {
+    --background: #F0F0F0;
+    --background-hover: #E0E0E0;
+    --background-activated: #D0D0D0;
+    --color: black;
+}
+
+
+.text-center {
+    text-align: center;
+}
+
+.col-4 {
+    width: 33%;
+}
+
+.col-6 {
+    width: 50%;
+}
+
+.col-12 {
+    width: 100%;
+}

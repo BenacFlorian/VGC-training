@@ -1,0 +1,24 @@
+<div class="container">  
+  <ion-content [fullscreen]="true">  
+    <div id="container">
+      <ion-card class="speed_versus_card">   
+        
+        <ion-card-header>
+          <ion-card-title>Who's faster at max speed ?</ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content *ngIf="is2PokeLoaded">
+          <comp-speed-versus
+            [leftSide]="pokeLeft"
+            [rightSide]="pokeRight"
+            (resetRequested)="resetRequested()"
+          ></comp-speed-versus>
+        </ion-card-content>
+
+        <ion-card-content *ngIf="!is2PokeLoaded" class="loading-content">
+          <img src="/assets/pokeball-loading.png" class="loading-image" alt="Loading...">
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </ion-content>
+</div>
