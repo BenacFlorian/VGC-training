@@ -2,7 +2,7 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
-
+import { UtilityService } from 'src/app/services/utility.service';
 interface Pokemon {
   name: string;
   sprites: {
@@ -47,13 +47,13 @@ export class SpeedVersusComponent implements OnInit {
 
   @Output() resetRequested = new EventEmitter<number>();
 
-  constructor(private localStorageService: LocalStorageService) {}
+  constructor(private localStorageService: LocalStorageService, private utilityService: UtilityService) {}
 
   ngOnInit(): void {
     this.srcRight = this.rightSide.sprites.front_default;
     this.srcLeft = this.leftSide.sprites.front_default;
-    this.nameLeft = this.capitalizeFirstLetter(this.leftSide.name);
-    this.nameRight = this.capitalizeFirstLetter(this.rightSide.name);
+    this.nameLeft = this.utilityService.capitalizeFirstLetter(this.leftSide.name);
+    this.nameRight = this.utilityService.capitalizeFirstLetter(this.rightSide.name);
     this.speedLeft = this.getMaxSpeed(this.leftSide.stats)
     this.speedRight = this.getMaxSpeed(this.rightSide.stats)
     const speedVersusData = this.localStorageService.getItem('speedVersusData');
@@ -70,10 +70,6 @@ export class SpeedVersusComponent implements OnInit {
     }
   }
   
-  capitalizeFirstLetter(str: string): string {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  }
-
   getMaxSpeed(stats: any): number{
     const maxSpeed = Math.trunc(((2*stats[5].base_stat+31+(252/4))*(50/100)+5)*1.1);
     return maxSpeed;

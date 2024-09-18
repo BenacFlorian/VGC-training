@@ -26,4 +26,12 @@ export const routes: Routes = [
     path: 'speed-quiz',
     loadComponent: () => import('./pages/speed-quiz/speed-quiz.page').then( m => m.SpeedQuizPage)
   },
+  {
+    path: 'def-or-spe-def',
+    loadComponent: () => import('./pages/def-spedef-what-best/def-spedef-what-best.page').then( m => m.DefSpedefWhatBestPage)
+  },
+  {
+    path: 'abilities-quiz',
+    loadComponent: () => import('./pages/abilities-quiz/abilities-quiz.page').then( m => m.AbilitiesQuizPage)
+  },
 ];

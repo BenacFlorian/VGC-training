@@ -4,6 +4,7 @@ import { Pokemon } from 'src/app/http/requests/pokemon/pokemon.service';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
+import { UtilityService } from 'src/app/services/utility.service';
 
 
 interface ScoreSpeedQuiz {
@@ -35,11 +36,11 @@ export class SpeedQuizComponent  implements OnInit {
   userGuess: number | undefined;
   score: any;
 
-  constructor(private localStorageService: LocalStorageService)  { }
+  constructor(private utilityService: UtilityService, private localStorageService: LocalStorageService)  { }
 
   ngOnInit() {
     this.src = this.poke.sprites.front_default;
-    this.name = this.capitalizeFirstLetter(this.poke.name);
+    this.name = this.utilityService.capitalizeFirstLetter(this.poke.name);
     this.speed = this.getMaxSpeed(this.poke.stats);
 
     const speedQuizData = this.localStorageService.getItem('speedQuizData');
@@ -60,10 +61,6 @@ export class SpeedQuizComponent  implements OnInit {
     this.resetRequested.emit(this.hasRightAnswer ? 1 : 0);
   }
   
-  capitalizeFirstLetter(str: string): string {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  }
-
   getMaxSpeed(stats: any): number{
     const maxSpeed = Math.trunc(((2*stats[5].base_stat+31+(252/4))*(50/100)+5)*1.1);
     return maxSpeed;

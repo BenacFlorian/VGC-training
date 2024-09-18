@@ -1,0 +1,60 @@
+
+.winner{
+    width: 100%;
+    font-size: 1.2rem;
+    border-radius: 1rem;
+    padding: 0.1rem;
+}
+.looser{
+    width: 100%;
+    font-size: 1rem;
+    border-radius: 0.5rem;
+    padding: 0.1rem;
+}
+
+.column {
+    display: flex;
+    height: 100%;
+    width:100%;
+    align-items: center;
+    justify-content: center;
+}
+.column-btn {
+    display: flex;
+    height: 100%;
+    width:33%;
+    align-items: center;
+    justify-content: center;
+}
+
+.column ion-row {
+    width: 100%;
+}
+.column-speed-versus {
+    display: flex;
+    height: 100%;
+    width:100%;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.good-answer-bg {
+    background-color: #1987546e !important;
+    --background: #1987546e !important;
+}
+.bad-answer-bg {
+    background-color: #dc354670 !important;
+    --background: #dc354670 !important;
+}
+
+.align-items-start {
+    display: flex;
+    align-items: flex-start;
+}
+.next-button {
+    ion-button {
+        width: 33%; // Permet au bouton de s'ajuster à son contenu
+        float: right; // Aligne le bouton à droite
+    }
+}
