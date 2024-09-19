@@ -50,7 +50,8 @@ export class SpeedQuizComponent  implements OnInit {
       this.score = {
         nbGoodAnswer: 0,
         nbBadAnswer: 0,
-        percentGoodAnswer: 0
+        percentGoodAnswer: 0,
+        strike: 0
       };
       speedQuizData.score = this.score;
       this.localStorageService.setItem('speedQuizData', speedQuizData);
@@ -71,11 +72,13 @@ export class SpeedQuizComponent  implements OnInit {
       this.hasRightAnswer = true;
       if(!!this.score){
         this.score.nbGoodAnswer++;
+        this.score.strike++;
       }
     } else {
       this.hasRightAnswer = false;
       if(!!this.score){
         this.score.nbBadAnswer++;
+        this.score.strike = 0;
       }
     }
     if(!!this.score){

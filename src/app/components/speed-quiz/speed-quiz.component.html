@@ -6,6 +6,13 @@
       {{score.percentGoodAnswer}}% of good answers
     </ion-col>
   </ion-row>
+  <ion-row *ngIf="!!score && score.strike > 0">
+    <ion-col size="3" class="column">
+    </ion-col>
+    <ion-col size="6" class="text-center column">
+      Strike of {{score.strike}}
+    </ion-col>
+  </ion-row>
   <ion-row>
     <ion-col size="12" class="column-speed-versus">
       <ion-row class="align-items-center">
