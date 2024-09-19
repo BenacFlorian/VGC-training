@@ -1,3 +1,54 @@
-<p>
-  abilities-quiz works!
-</p>
+<ion-grid class="w-100">
+  <ion-row *ngIf="!!score && (score.nbGoodAnswer+score.nbBadAnswer) > 0">
+    <ion-col size="3" class="column">
+    </ion-col>
+    <ion-col size="6" class="text-center column">
+      {{score.percentGoodAnswer}}% of good answers
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="3" class="column">
+    </ion-col>
+    <ion-col size="6" class="text-center column">
+      Strike of {{score.strike}}
+    </ion-col>
+  </ion-row>
+
+  <ion-row *ngIf="score.strike > 0">
+    <ion-col size="3" class="column">
+    </ion-col>
+    <ion-col size="6" class="text-center column">
+    </ion-col>
+  </ion-row>
+
+  <ion-row>
+    <ion-col size="12" class="column-speed-versus">
+      <ion-row class="align-items-center" style="color: black;">
+        {{description}}
+      </ion-row>
+    </ion-col>
+  </ion-row>
+  
+  <ion-row class="mt-2 w-100">
+    <ion-col size="6" class="text-center column-btn w-50" (click)="answer(0)">
+      <ion-button [ngClass]="{'good-answer-bg': rightAnswer === 0, 'bad-answer-bg': hasRightAnswer === false && rightAnswer !== 0}" class="left name light-gray-button w-100">{{abilities[0].name || 'Error'}}</ion-button>
+    </ion-col>
+    <ion-col size="6" class="text-center column-btn w-50" (click)="answer(1)">
+      <ion-button [ngClass]="{'good-answer-bg': rightAnswer === 1, 'bad-answer-bg': hasRightAnswer === false && rightAnswer !== 1}" class="name light-gray-button w-100">{{abilities[1].name || 'Error'}}</ion-button>
+    </ion-col>
+  </ion-row>
+  <ion-row class="mt-2 w-100">
+    <ion-col size="6" class="text-center column-btn w-50" (click)="answer(2)">
+      <ion-button [ngClass]="{'good-answer-bg': rightAnswer === 2, 'bad-answer-bg': hasRightAnswer === false && rightAnswer !== 2}" class="left name light-gray-button w-100">{{abilities[2].name || 'Error'}}</ion-button>
+    </ion-col>
+    <ion-col size="6" class="text-center column-btn w-50" (click)="answer(3)">
+      <ion-button [ngClass]="{'good-answer-bg': rightAnswer === 3, 'bad-answer-bg': hasRightAnswer === false && rightAnswer !== 3}" class="name light-gray-button w-100">{{abilities[3].name || 'Error'}}</ion-button>
+    </ion-col>
+  </ion-row>
+
+  <ion-row class="mt-4" *ngIf="isAnswered">
+    <ion-col size="12" class="ion-text-end next-button col-12" style="padding: 0;">
+      <ion-button class="name light-gray-button col-4" (click)="reinitQuiz()"style="margin:0; margin-bottom: 4%;">Next</ion-button>
+    </ion-col>
+  </ion-row>
+</ion-grid>

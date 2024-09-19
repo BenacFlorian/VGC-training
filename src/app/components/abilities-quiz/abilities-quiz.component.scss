@@ -1,0 +1,20 @@
+
+.good-answer-bg {
+    background-color: #1987546e !important;
+    --background: #1987546e !important;
+}
+.bad-answer-bg {
+    background-color: #dc354670 !important;
+    --background: #dc354670 !important;
+}
+.name{
+    font-size: 0.8em;
+}
+
+.column {
+    display: flex;
+    height: 100%;
+    width:100%;
+    align-items: center;
+    justify-content: center;
+}

@@ -1,15 +1,15 @@
 <div class="container">  
   <ion-content [fullscreen]="true">  
     <div id="container">
-      <ion-card class="speed_quiz_card">      
+      <ion-card class="ability_quiz_card">      
         <ion-card-content>
           <ion-grid>
             <ion-card-header>
-              <ion-card-title>Is this base stats Pokemon more Def or more SpeDef ?</ion-card-title>
+              <ion-card-title>Which ability match this definition?</ion-card-title>
             </ion-card-header>
 
             <ion-card-content *ngIf="isQuestionCreated">
-              <comp-abilities-quiz></comp-abilities-quiz>
+              <comp-abilities-quiz [abilities]="abilitiesForQuiz" (resetRequested)="resetRequested()"></comp-abilities-quiz>
             </ion-card-content>
 
             <ion-card-content *ngIf="!isQuestionCreated" class="loading-content">

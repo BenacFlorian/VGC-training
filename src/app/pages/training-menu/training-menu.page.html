@@ -42,13 +42,12 @@
             </ion-row>
             <ion-row class="w-100">
               <ion-col class="training-menu-column">
-                <ion-button (click)="goToDefOrSpedDef()" class="w-100 custom-button">
+                <ion-button (click)="goToAbilitiesQuiz()" class="w-100 custom-button">
                   <div class="button-content">
                     <span class="material-symbols-outlined icon">
                       school
                     </span>
-                    <ion-label>Abilities</ion-label>
-                    <!-- <ion-label>Def or Spe Def ({{getScore().defOrDefSpe || 0}}%)</ion-label> -->
+                    <ion-label>Abilities ({{getScore().abilitiesQuiz || 0}}%)</ion-label>
                   </div>
                 </ion-button>
               </ion-col>
@@ -59,3 +58,6 @@
     </div>
   </ion-content>
 </div>
+<ion-button class="button-back" (click)="resetStats()">
+  Reset stats
+</ion-button>

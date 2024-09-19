@@ -1,27 +1,70 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { AbilitiesQuizUtilityService } from './abilities-quiz-utility.service';
 import { IonicModule } from '@ionic/angular';
-import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { AbilitiesQuizComponent } from 'src/app/components/abilities-quiz/abilities-quiz.component';
+import { Router } from '@angular/router';
+import { AbilitiesService } from '../../http/requests/abilities/abilities.service';
+import { forkJoin } from 'rxjs';
+import { UtilityService } from '../../services/utility.service';
 
 @Component({
   selector: 'app-abilities-quiz',
   templateUrl: './abilities-quiz.page.html',
   styleUrls: ['./abilities-quiz.page.scss'],
+  providers: [AbilitiesQuizUtilityService],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, AbilitiesQuizComponent]
+  imports: [IonicModule, CommonModule, AbilitiesQuizComponent]
 })
 export class AbilitiesQuizPage implements OnInit {
+  abilities: string[] = [];
+  allTopAbilities: {name: string, url: string}[] = [];
+  isQuestionCreated: boolean = false;
+  abilitiesWithDetails: any[] = [];
+  abilitiesForQuiz: any[] = [];
 
-  isQuestionCreated = false;
-
-  constructor(private router: Router) { }
+  constructor(
+    private abilitiesQuizUtilityService: AbilitiesQuizUtilityService,
+    private abilitiesService: AbilitiesService,
+    private router: Router,
+    private utilityService: UtilityService
+  ) { }
 
   ngOnInit() {
-  }
-  backToMenu(){
-    this.router.navigateByUrl('/training-menu');
+    this.loadAbilities();
   }
 
+  public resetRequested(){
+    this.isQuestionCreated = false;
+    this.loadAbilities();
+  }
+
+  loadAbilities() {
+    forkJoin([
+      this.abilitiesService.getAllAbilities(),
+      this.abilitiesQuizUtilityService.getAbilities()
+    ]).subscribe(
+      ([allAbilities, quizAbilities]) => {
+        this.allTopAbilities = this.filterTopAbilities(allAbilities, quizAbilities);
+        this.abilitiesQuizUtilityService.getAbilitiesWithDetails(this.allTopAbilities)
+          .subscribe((abilitiesWithDetails) => {
+            this.abilitiesWithDetails = abilitiesWithDetails;
+            this.abilitiesForQuiz = this.utilityService.getRandomElements(this.abilitiesWithDetails);
+            this.isQuestionCreated = true;
+            console.log('Capacités principales chargées :', this.abilitiesWithDetails);
+          });
+      },
+      (error) => {
+        console.error('Erreur lors du chargement des capacités :', error);
+      }
+    );
+  }
+
+  filterTopAbilities(allAbilities: any[], quizAbilities: string[]): {name: string, url: string}[] {
+    return allAbilities.filter(ability => quizAbilities.includes(ability.name));
+  }
+
+  backToMenu() {
+    this.router.navigateByUrl('/training-menu');
+  }
 }

@@ -55,12 +55,9 @@ export class UsageSmogonService {
         if (response.status >= 200 && response.status < 300) {
           return of(url);
         } else {
-          return throwError(() => new Error(`HTTP error! status: ${response.status}`));
+          console.log('Error fetching URL:', url);
+          return this.findValidUrl(date, String.fromCharCode(letter.charCodeAt(0) - 1));
         }
-      }),
-      catchError((err) => {
-        console.error('Error fetching URL:', url, err);
-        return this.findValidUrl(date, String.fromCharCode(letter.charCodeAt(0) - 1));
       })
     );
   }
