@@ -1,6 +1,13 @@
 <div class="container">  
   <ion-content [fullscreen]="true">  
     <div id="container">
+      <ion-card class="score_card" *ngIf="isQuestionCreated && !!score?.bestStrike">  
+        <ion-card-content>
+          <div class="score_content">
+            <p>Best strike: {{score?.bestStrike}}</p>
+          </div>
+        </ion-card-content>
+      </ion-card>
       <ion-card class="ability_quiz_card">      
         <ion-card-content>
           <ion-grid>

@@ -6,6 +6,7 @@ import { PokemonService } from 'src/app/http/requests/pokemon/pokemon.service';
 import { Router } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { DefOrSpeDefComponent } from 'src/app/components/def-or-spe-def/def-or-spe-def.component';
+import { LocalStorageService } from 'src/app/services/local-storage.service';
 @Component({
   selector: 'app-def-spedef-what-best',
   templateUrl: './def-spedef-what-best.page.html',
@@ -18,10 +19,13 @@ export class DefSpedefWhatBestPage implements OnInit {
   public pokemonTopUsage: FormattedPokemon[] = [];
   public poke: any;
   public isPokeLoaded: boolean = false;
+  public score: any;
 
-  constructor(private pokemonService: PokemonService, private usageSmogonService: UsageSmogonService, private router: Router) { }
+  constructor(private pokemonService: PokemonService, private usageSmogonService: UsageSmogonService, private router: Router, private localStorageService: LocalStorageService) { }
 
   ngOnInit() {
+    const defOrDefSpeData = this.localStorageService.getItem('defOrDefSpeData');
+    this.score = defOrDefSpeData.score;
     this.usageSmogonService.getUsageData().subscribe({
       next: (formattedData) => {
         this.pokemonTopUsage = formattedData;
@@ -41,6 +45,8 @@ export class DefSpedefWhatBestPage implements OnInit {
     this.isPokeLoaded = false;
     this.pokemonService.fetchOneValidPokemon(this.pokemonTopUsage).subscribe((data)=>{
       this.poke = data;
+      const defOrDefSpeData = this.localStorageService.getItem('defOrDefSpeData');
+      this.score = defOrDefSpeData.score;
       this.isPokeLoaded = true;
     });
   }

@@ -24,11 +24,13 @@ export class TrainingMenuPage {
     const speedQuiz = this.localStorageService.getItem('speedQuizData');
     const defOrDefSpe = this.localStorageService.getItem('defOrDefSpeData');
     const abilitiesQuiz = this.localStorageService.getItem('abilitiesQuizData');
+    const calcQuiz = this.localStorageService.getItem('calcQuizData');
     const score = {
       speedVS: speedVS.score?.percentGoodAnswer,
       speedQuiz: speedQuiz.score?.percentGoodAnswer,
       defOrDefSpe: defOrDefSpe.score?.percentGoodAnswer,
-      abilitiesQuiz: abilitiesQuiz.score?.percentGoodAnswer
+      abilitiesQuiz: abilitiesQuiz.score?.percentGoodAnswer,
+      calcQuiz: calcQuiz.score?.percentGoodAnswer
     };
     return score;
   }
@@ -45,10 +47,14 @@ export class TrainingMenuPage {
   goToAbilitiesQuiz(){
     this.router.navigateByUrl('/abilities-quiz');
   }
+  goToCalcQuiz(){
+    this.router.navigateByUrl('/calc-quiz');
+  }
   resetStats(){
     this.localStorageService.removeItem('speedVersusData');
     this.localStorageService.removeItem('speedQuizData');
     this.localStorageService.removeItem('defOrDefSpeData');
     this.localStorageService.removeItem('abilitiesQuizData'); 
+    this.localStorageService.removeItem('calcQuizData'); 
   }
 }

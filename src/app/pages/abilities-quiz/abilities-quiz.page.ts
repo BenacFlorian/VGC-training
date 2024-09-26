@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { AbilitiesService } from '../../http/requests/abilities/abilities.service';
 import { forkJoin } from 'rxjs';
 import { UtilityService } from '../../services/utility.service';
+import { LocalStorageService } from '../../services/local-storage.service';
 
 @Component({
   selector: 'app-abilities-quiz',
@@ -22,20 +23,26 @@ export class AbilitiesQuizPage implements OnInit {
   isQuestionCreated: boolean = false;
   abilitiesWithDetails: any[] = [];
   abilitiesForQuiz: any[] = [];
+  score: any;
 
   constructor(
     private abilitiesQuizUtilityService: AbilitiesQuizUtilityService,
     private abilitiesService: AbilitiesService,
     private router: Router,
+    private localStorageService: LocalStorageService,
     private utilityService: UtilityService
   ) { }
 
   ngOnInit() {
+    const abilitiesQuizData = this.localStorageService.getItem('abilitiesQuizData');
+    this.score = abilitiesQuizData.score;
     this.loadAbilities();
   }
 
   public resetRequested(){
     this.isQuestionCreated = false;
+    const abilitiesQuizData = this.localStorageService.getItem('abilitiesQuizData');
+    this.score = abilitiesQuizData.score;
     this.loadAbilities();
   }
 
@@ -45,6 +52,15 @@ export class AbilitiesQuizPage implements OnInit {
       this.abilitiesQuizUtilityService.getAbilities()
     ]).subscribe(
       ([allAbilities, quizAbilities]) => {
+
+        if(JSON.stringify(this.localStorageService.getItem('abilities').abilities) !== JSON.stringify(allAbilities)) {            
+          this.localStorageService.setItem('abilities', {
+            abilities: allAbilities,
+          });
+          this.localStorageService.setItem('abilitiesDate', {
+            date: new Date(),
+          });
+        }
         this.allTopAbilities = this.filterTopAbilities(allAbilities, quizAbilities);
         this.abilitiesQuizUtilityService.getAbilitiesWithDetails(this.allTopAbilities)
           .subscribe((abilitiesWithDetails) => {

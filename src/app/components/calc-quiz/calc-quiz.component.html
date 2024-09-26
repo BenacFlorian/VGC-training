@@ -1,0 +1,139 @@
+<ion-grid>
+
+  <ion-row *ngIf="!!score && (score.nbGoodAnswer+score.nbBadAnswer) > 0">
+    <ion-col size="6" class="text-center column-score">
+      {{score.percentGoodAnswer}}% of good answers
+    </ion-col>
+  </ion-row>
+  <ion-row *ngIf="!!score && score.strike > 0">
+    <ion-col size="6" class="text-center column-score">
+      Strike of {{score.strike}}
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="4" class="column-speed-versus w-33 d-flex">
+      <ion-row class="align-items-start d-flex">
+        <p class="mt-2 ml-3 speed text-black">{{utilityService.capitalizeFirstLetter(leftSide.name)}}</p>    
+      </ion-row>
+    </ion-col>
+    <ion-col size="4" class="column-speed-versus w-33 d-flex">
+      <ion-row class="align-items-start d-flex">
+      </ion-row>
+    </ion-col>
+    <ion-col size="4" class="column-speed-versus w-33 d-flex">
+      <ion-row class="align-items-start d-flex">
+        <p class="mt-2 ml-3 speed text-black">{{utilityService.capitalizeFirstLetter(rightSide.name)}}</p>    
+      </ion-row>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="4" class="column-speed-versus w-33 d-flex">
+      <ion-row class="align-items-start d-flex" style="margin-left: 10%;">
+        <img [src]="srcLeft">
+      </ion-row>
+    </ion-col>
+    <ion-col size="4" class="column-speed-versus w-33 d-flex">
+      <ion-row class="align-items-start d-flex">
+        <p class="VS">VS</p>
+      </ion-row>
+    </ion-col>
+    <ion-col size="4" class="column-speed-versus w-33 d-flex">
+      <ion-row class="align-items-start d-flex">
+        <img [src]="srcRight">
+      </ion-row>
+    </ion-col>
+  </ion-row>
+  
+  <table class="w-100">
+    <tr *ngIf="!isAnswered">
+      <td class="w-50">
+        <div class="d-inline-block w-20 float-left text-left">Ab. : </div>
+        <div class="d-inline-block w-80 float-left text-left">
+          <p class="speed align-left ml-2 black">{{utilityService.capitalizeFirstLetter(leftSide.ability.name)}}</p>
+        </div>        
+      </td>
+      <td class="w-50">
+        <div class="d-inline-block w-40 float-left text-left pl-4">Ab. : </div>
+        <div class="d-inline-block w-60 float-left text-left">
+          <p class="speed align-left ml-2 black">{{utilityService.capitalizeFirstLetter(rightSide.ability.name)}}</p>
+        </div>      
+      </td>
+    </tr>
+    <tr *ngIf="!isAnswered">
+      <td class="w-50 pt-2">
+        <div class="d-inline-block w-20 float-left text-left">          
+          <img [src]="items.left.src"  style="height: 25px;">
+        </div>
+        <div class="d-inline-block w-80 float-left text-left">
+          <p class="ml-2 text-left black">{{items.left.name}}</p>
+        </div>
+      </td>
+      <td class="w-50 pt-2">
+        <div class="d-inline-block w-40 float-left text-left  pl-4">          
+          <img [src]="items.right.src"  style="height: 25px;">
+        </div>
+        <div class="d-inline-block w-60 float-left text-left">
+          <p class="ml-2 text-left black">{{items.right.name}}</p>
+        </div>
+      </td>
+    </tr>
+    <tr *ngIf="!isAnswered" class="mt-1">
+      <td class="w-50 pt-1">
+        <div class="d-inline-block w-20 float-left text-left">    
+          <img [src]="srcType"  style="height: 22px;">
+        </div>
+        <div class="d-inline-block w-80 float-left text-left">
+          <p class="ml-2 text-left black">{{nameAttack}}</p>
+        </div>
+      </td>
+    </tr>
+    <tr *ngIf="!isAnswered">
+      <td class="w-50 pt-2">
+        <div class="d-inline-block w-20 float-left text-left"> 
+          <img [src]="srcCategory"  style="width: 24px; height: 21px;">
+        </div>
+        <div class="d-inline-block w-80 float-left text-left">
+          <p class="ml-2 text-left black">{{powerAttack}}</p>
+        </div>
+      </td>
+    </tr>
+  </table>
+  <ion-row *ngIf="isAnswered">
+    <ion-col size="12" class="w-100 d-flex">
+      <ion-row class="align-items-start" style="margin-left: 10%; text-align: left;">
+        <p>{{calc.calc1}}</p>
+      </ion-row>
+    </ion-col>
+  </ion-row>
+  <ion-row *ngIf="isAnswered">
+    <ion-col size="12" class="w-100 d-flex">
+      <ion-row class="align-items-start" style="margin-left: 10%;">
+        <p>{{calc.calc2}}</p>
+      </ion-row>
+    </ion-col>
+  </ion-row>
+  <ion-row *ngIf="isAnswered">
+    <ion-col size="12" class="w-100 d-flex">
+      <ion-row class="align-items-start" style="margin-left: 10%;">
+        <p>{{calc.calc3}}</p>
+      </ion-row>
+    </ion-col>
+  </ion-row>
+
+  <ion-row class="mt-2 w-100">
+    <ion-col size="4" class="text-center column-calc-versus d-flex" (click)="answer('kill')">
+      <ion-button [ngClass]="{'good-answer-bg': rightAnswer.result === 'KO', 'bad-answer-bg': hasRightAnswer === false && !!rightAnswer.result && rightAnswer.result !== 'KO'}" class="left name light-gray-button w-100">KO</ion-button>
+    </ion-col>
+    <ion-col size="4" class="text-center column-calc-versus d-flex" (click)="answer('50+')">
+      <ion-button [ngClass]="{'good-answer-bg': rightAnswer.result === '50+', 'bad-answer-bg': hasRightAnswer === false && !!rightAnswer.result && rightAnswer.result !== '50+'}" class="name light-gray-button w-100">> 50%</ion-button>
+    </ion-col>
+    <ion-col size="4" class="text-center column-calc-versus d-flex" (click)="answer('50-')">
+      <ion-button [ngClass]="{'good-answer-bg': rightAnswer.result === '50-', 'bad-answer-bg': hasRightAnswer === false && !!rightAnswer.result && rightAnswer.result !== '50-'}" class="name light-gray-button w-100">< 50%</ion-button>
+    </ion-col>
+  </ion-row>
+  <ion-row class="mt-2" *ngIf="isAnswered">
+    <ion-col size="12" class="ion-text-end next-button col-12" style="padding: 0;">
+      <ion-button class="name light-gray-button col-4" (click)="reinitVersus()"style="margin:0;">Next</ion-button>
+    </ion-col>
+  </ion-row>
+</ion-grid>

@@ -11,10 +11,23 @@
     font-size: 0.8em;
 }
 
+.column-score {
+    display: flex;
+    height: 100%;
+    width:100%;
+    align-items: center;
+    justify-content: center;
+}
 .column {
     display: flex;
     height: 100%;
     width:100%;
     align-items: center;
     justify-content: center;
+}
+.next-button {
+    ion-button {
+        width: 33%; // Permet au bouton de s'ajuster à son contenu
+        float: right; // Aligne le bouton à droite
+    }
 }

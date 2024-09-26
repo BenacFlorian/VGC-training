@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpService } from '../../http.service';
 import { catchError, forkJoin, map, Observable, of, EMPTY } from 'rxjs';
 import { FormattedPokemon } from '../usage-smogon/usage-smogon.service';
-
+import { UtilityService } from '../../../services/utility.service';
 export interface Pokemon {
   name: string;
   sprites: {
@@ -22,9 +22,9 @@ export interface Pokemon {
 export class PokemonService {
   private baseUrl = 'https://pokeapi.co/api/v2/pokemon';
 
-  constructor(private httpService: HttpService) { }
+  constructor(private httpService: HttpService, private utilityService: UtilityService) { }
 
-  public fetchOneValidPokemon(pokemonTopUsage: FormattedPokemon[]): Observable<any> {
+  public fetchOneValidPokemon(pokemonTopUsage: any[]): Observable<any> {
     const indexPokeRandom = this.getOneRandomPokemon(pokemonTopUsage);
     const poke = pokemonTopUsage[indexPokeRandom];
 
@@ -44,7 +44,7 @@ export class PokemonService {
     );
   }
 
-  public fetchTwoValidPokemon(pokemonTopUsage: FormattedPokemon[]): Observable<string | any[]> {
+  public fetchTwoValidPokemon(pokemonTopUsage: any[]): Observable<string | any[]> {
 
     const indexPokeRandom = this.getTwoRandomPokemon(pokemonTopUsage);
     const pokeLeft = pokemonTopUsage[indexPokeRandom[0]];
@@ -77,7 +77,7 @@ export class PokemonService {
     );
   }
 
-  getTwoRandomPokemon(pokemonTopUsage: FormattedPokemon[]): [number, number] {
+  getTwoRandomPokemon(pokemonTopUsage: any[]): [number, number] {
     const max = pokemonTopUsage.length - 1;
     let first = Math.floor(Math.random() * (max + 1));
     let second = Math.floor(Math.random() * (max + 1));
@@ -89,7 +89,7 @@ export class PokemonService {
     
     return [first, second];
   }
-  getOneRandomPokemon(pokemonTopUsage: FormattedPokemon[]): number {
+  getOneRandomPokemon(pokemonTopUsage: any[]): number {
     const max = pokemonTopUsage.length - 1;
     let first = Math.floor(Math.random() * (max + 1));
     
@@ -102,6 +102,7 @@ export class PokemonService {
    * @returns Un Observable contenant les informations sur le Pokémon
    */
   getPokemon(nameOrId: string | number): Observable<any> {
-    return this.httpService.get<Pokemon>(`${this.baseUrl}/${nameOrId}`);
+    const formattedName = this.utilityService.sanitizeName(nameOrId);
+    return this.httpService.get<Pokemon>(`${this.baseUrl}/${formattedName}`);
   }
 }

@@ -1,0 +1,108 @@
+
+.column-speed-versus ion-row {
+    width: 100%;
+}
+
+.column-speed-versus img, .column-speed-versus .VS {
+    margin-top: 0;
+}
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.good-answer-bg {
+    background-color: #1987546e !important;
+    --background: #1987546e !important;
+}
+.bad-answer-bg {
+    background-color: #dc354670 !important;
+    --background: #dc354670 !important;
+}
+
+.align-items-start {
+    display: flex;
+    align-items: flex-start;
+}
+.d-flex{
+    display: flex;
+}
+.column-score {
+    display: flex;
+    height: 100%;
+    width:100%;
+    align-items: center;
+    justify-content: center;
+}
+.column-speed-versus {
+    display: inline-block;
+    height: 100%;
+    width:50%;
+    align-items: center;
+    justify-content: center;
+}
+.column-calc-versus {
+    display: inline-block;
+    height: 100%;
+    width:33%;
+    align-items: center;
+    justify-content: center;
+}
+.w-33{
+    width: 33% !important;
+}
+.column-name{
+    display: inline-block;
+    width: 45%;
+    text-align: left;
+}
+.VS{
+    margin-left: 40%;
+    margin-top: 30% !important;
+}
+.align-left{
+    text-align: left;
+}
+
+ion-row{
+    --ion-default-dynamic-font: -apple-system-body;
+    --ion-font-family: var(--ion-default-font);
+    --ion-safe-area-top: env(safe-area-inset-top);
+    --ion-safe-area-bottom: env(safe-area-inset-bottom);
+    --ion-default-font: "Roboto", "Helvetica Neue", sans-serif;
+    text-rendering: optimizeLegibility;
+    word-wrap: break-word;
+    text-size-adjust: none;
+    user-select: none;
+    --padding-top: 0px;
+    --padding-bottom: 0px;
+    --padding-start: 0px;
+    --padding-end: 0px;
+    --keyboard-offset: 0px;
+    --overflow: auto;
+    --offset-top: 0px;
+    --offset-bottom: 914px;
+    text-align: center;
+    --ion-safe-area-left: 0px;
+    --ion-safe-area-right: 0px;
+    -webkit-font-smoothing: antialiased;
+    color: var(--color);
+    font-family: var(--ion-font-family, inherit);
+    --background: var(--ion-card-background, var(--ion-item-background, var(--ion-background-color, #fff)));
+    --color: var(--ion-card-color, var(--ion-item-color, var(--ion-color-step-550, #737373)));
+    font-size: 0.875rem;
+    line-height: 1.5;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.next-button {
+    ion-button {
+        width: 33%; // Permet au bouton de s'ajuster à son contenu
+        float: right; // Aligne le bouton à droite
+    }
+}

@@ -7,6 +7,7 @@ import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { PokemonService } from 'src/app/http/requests/pokemon/pokemon.service';
 import { Router } from '@angular/router';
+import { LocalStorageService } from 'src/app/services/local-storage.service';
 @Component({
   selector: 'app-speed-versus',
   templateUrl: './speed-versus.page.html',
@@ -18,12 +19,16 @@ export class SpeedVersusPage implements OnInit {
   pokeLeft: any;
   pokeRight: any;
   is2PokeLoaded: boolean = false;
+  score: any;
 
-  constructor(private pokemonService: PokemonService, private usageSmogonService: UsageSmogonService, private router: Router) {}
+  constructor(private pokemonService: PokemonService, private usageSmogonService: UsageSmogonService, private router: Router, private localStorageService: LocalStorageService) {}
 
   pokemonTopUsage: FormattedPokemon[] = [];
 
   ngOnInit() {
+
+    const speedVersusData = this.localStorageService.getItem('speedVersusData');
+    this.score = speedVersusData.score;
     this.usageSmogonService.getUsageData().subscribe({
       next: (formattedData) => {
         this.pokemonTopUsage = formattedData;
@@ -46,6 +51,8 @@ export class SpeedVersusPage implements OnInit {
       this.pokeLeft = data[0];
       this.pokeRight = data[1];
       this.is2PokeLoaded = true;
+      const speedVersusData = this.localStorageService.getItem('speedVersusData');
+      this.score = speedVersusData.score;
     });
   }
 

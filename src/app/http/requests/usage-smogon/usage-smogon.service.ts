@@ -5,6 +5,7 @@ import { from, Observable, of, throwError } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { HttpService } from '../../http.service';
 import { CapacitorHttp } from '@capacitor/core';
+import { LocalStorageService } from 'src/app/services/local-storage.service';
 
 export interface FormattedPokemon {
   name: string;
@@ -24,12 +25,16 @@ export class UsageSmogonService {
   constructor(
     private httpService:HttpService,
     private http: HttpClient,
-    private platform: Platform
+    private localStorageService: LocalStorageService
   ) { }
 
   getUsageData(): Observable<FormattedPokemon[]> {
-    if(this.usages){
-      return of(this.usages);
+    const usages = this.localStorageService.getItem('usages');
+    const usagesDate = this.localStorageService.getItem('usagesDate');
+    const today = new Date();
+    const usagesDateObj = new Date(usagesDate);
+    if (usages && usagesDateObj.setHours(0, 0, 0, 0) == today.setHours(0, 0, 0, 0)) {
+      return of(usages);
     }
     const date = new Date();
     date.setMonth(date.getMonth() - 1);
@@ -66,6 +71,8 @@ export class UsageSmogonService {
 
   private formatUsage(content: string): FormattedPokemon[] {
     this.usages = content.split('\n').filter(this.isPokemonLine).map(line => this.formatPokemonLine(line)).filter((poke)=> poke.rawUsage > 1500);
+    this.localStorageService.setItem('usages', this.usages);
+    this.localStorageService.setItem('usagesDate', new Date());
     return this.usages;
   }
 

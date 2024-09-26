@@ -81,6 +81,13 @@ ion-button::part(native) {
     align-items: center;
     justify-content: center;
 }
+.column-score {
+    display: flex;
+    height: 100%;
+    width:100%;
+    align-items: center;
+    justify-content: center;
+}
 
 img, .VS {
     margin-top: 0;

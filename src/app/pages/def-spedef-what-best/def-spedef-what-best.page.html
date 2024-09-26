@@ -1,11 +1,19 @@
 <div class="container">  
   <ion-content [fullscreen]="true">  
     <div id="container">
+
+      <ion-card class="score_card" *ngIf="isPokeLoaded && !!score?.bestStrike">  
+        <ion-card-content>
+          <div class="score_content">
+            <p>Best strike: {{score?.bestStrike}}</p>
+          </div>
+        </ion-card-content>
+      </ion-card>
       <ion-card class="speed_quiz_card">      
         <ion-card-content>
           <ion-grid>
             <ion-card-header>
-              <ion-card-title>Is this base stats Pokemon more Def or more SpeDef ?</ion-card-title>
+              <ion-card-title>Is this base stats Pokemon more Def or more SpD ?</ion-card-title>
             </ion-card-header>
 
             <ion-card-content *ngIf="isPokeLoaded">

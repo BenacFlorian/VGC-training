@@ -42,6 +42,18 @@
             </ion-row>
             <ion-row class="w-100">
               <ion-col class="training-menu-column">
+                <ion-button (click)="goToCalcQuiz()" class="w-100 custom-button">
+                  <div class="button-content">
+                    <span class="material-symbols-outlined icon">
+                      swords
+                    </span>
+                    <ion-label>Calc quiz ({{getScore().defOrDefSpe || 0}}%)</ion-label>
+                  </div>
+                </ion-button>
+              </ion-col>
+            </ion-row>
+            <ion-row class="w-100">
+              <ion-col class="training-menu-column">
                 <ion-button (click)="goToAbilitiesQuiz()" class="w-100 custom-button">
                   <div class="button-content">
                     <span class="material-symbols-outlined icon">

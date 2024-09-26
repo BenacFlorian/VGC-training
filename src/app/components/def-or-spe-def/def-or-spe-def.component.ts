@@ -48,7 +48,8 @@ export class DefOrSpeDefComponent  implements OnInit {
         nbGoodAnswer: 0,
         nbBadAnswer: 0,
         percentGoodAnswer: 0,
-        strike: 0
+        strike: 0,
+        bestStrike: 0
       };
       defOrDefSpeData.score = this.score;
       this.localStorageService.setItem('defOrDefSpeData', defOrDefSpeData);
@@ -69,6 +70,9 @@ export class DefOrSpeDefComponent  implements OnInit {
         if(!!this.score){
           this.score.nbGoodAnswer++;
           this.score.strike++;
+          if(this.score.strike > this.score.bestStrike){
+            this.score.bestStrike = this.score.strike;
+          }
         }
       }else{
         this.hasRightAnswer = false;
@@ -85,6 +89,9 @@ export class DefOrSpeDefComponent  implements OnInit {
         if(!!this.score){
           this.score.nbGoodAnswer++;
           this.score.strike++;
+          if(this.score.strike > this.score.bestStrike){
+            this.score.bestStrike = this.score.strike;
+          }
         }
       }else{
         this.hasRightAnswer = false;
@@ -100,6 +107,9 @@ export class DefOrSpeDefComponent  implements OnInit {
         if(!!this.score){
           this.score.nbGoodAnswer++;
           this.score.strike++;
+          if(this.score.strike > this.score.bestStrike){
+            this.score.bestStrike = this.score.strike;
+          }
         }
       }else{
         this.hasRightAnswer = false;

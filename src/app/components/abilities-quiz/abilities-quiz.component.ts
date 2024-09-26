@@ -36,7 +36,8 @@ export class AbilitiesQuizComponent implements OnInit {
         nbGoodAnswer: 0,
         nbBadAnswer: 0,
         percentGoodAnswer: 0, 
-        strike: 0
+        strike: 0, 
+        bestStrike: 0
       };
       abilitiesQuizData.score = this.score;
       this.localStorageService.setItem('abilitiesQuizData', abilitiesQuizData);
@@ -62,6 +63,9 @@ export class AbilitiesQuizComponent implements OnInit {
     if(answer == this.selectedAbilityIndex){
       this.hasRightAnswer = true;
       this.score.strike++;
+      if(this.score.strike > this.score.bestStrike){
+        this.score.bestStrike = this.score.strike;
+      }
       this.score.nbGoodAnswer++;
     }else{
       this.hasRightAnswer = false;

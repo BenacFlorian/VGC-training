@@ -15,12 +15,6 @@ interface Pokemon {
     };
   }>;
 }
-interface ScoreSpeedVersus {
-  nbGoodAnswer: number;
-  nbBadAnswer: number;  
-  percentGoodAnswer: number;
-  strike: number;
-}
 
 @Component({
   selector: 'comp-speed-versus',
@@ -44,7 +38,7 @@ export class SpeedVersusComponent implements OnInit {
   hasRightAnswer: boolean | undefined;
   rightAnswer: 'left' | 'right' | 'same' | undefined;
   answerChoose: 'left' | 'right' | 'same' | undefined;
-  score: ScoreSpeedVersus | undefined;
+  score: any;
 
   @Output() resetRequested = new EventEmitter<number>();
 
@@ -65,7 +59,8 @@ export class SpeedVersusComponent implements OnInit {
         nbGoodAnswer: 0,
         nbBadAnswer: 0,
         percentGoodAnswer: 0,
-        strike: 0
+        strike: 0,
+        bestStrike: 0
       };
       speedVersusData.score = this.score;
       this.localStorageService.setItem('speedVersusData', speedVersusData);
@@ -87,6 +82,9 @@ export class SpeedVersusComponent implements OnInit {
         if(!!this.score){
           this.score.nbGoodAnswer++;
           this.score.strike++;
+          if(this.score.strike > this.score.bestStrike){
+            this.score.bestStrike = this.score.strike;
+          }
         }
       }else{
         this.hasRightAnswer = false;
@@ -103,6 +101,9 @@ export class SpeedVersusComponent implements OnInit {
         if(!!this.score){
           this.score.nbGoodAnswer++;
           this.score.strike++;
+          if(this.score.strike > this.score.bestStrike){
+            this.score.bestStrike = this.score.strike;
+          }
         }
       }else{
         this.hasRightAnswer = false;
@@ -118,6 +119,9 @@ export class SpeedVersusComponent implements OnInit {
         if(!!this.score){
           this.score.nbGoodAnswer++;
           this.score.strike++;
+          if(this.score.strike > this.score.bestStrike){
+            this.score.bestStrike = this.score.strike;
+          }
         }
       }else{
         this.hasRightAnswer = false;

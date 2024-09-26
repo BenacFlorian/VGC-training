@@ -33,6 +33,13 @@
 .column-speed-versus ion-row {
     width: 100%;
 }
+.column-score {
+    display: flex;
+    height: 100%;
+    width:100%;
+    align-items: center;
+    justify-content: center;
+}
 .column-speed-versus {
     display: flex;
     height: 100%;

@@ -1,15 +1,11 @@
 <ion-grid class="w-100">
   <ion-row *ngIf="!!score && (score.nbGoodAnswer+score.nbBadAnswer) > 0">
-    <ion-col size="3" class="column">
-    </ion-col>
-    <ion-col size="6" class="text-center column">
+    <ion-col size="6" class="text-center column-score">
       {{score.percentGoodAnswer}}% of good answers
     </ion-col>
   </ion-row>
-  <ion-row *ngIf="!!score && score.strike > 0">
-    <ion-col size="3" class="column">
-    </ion-col>
-    <ion-col size="6" class="text-center column">
+  <ion-row *ngIf="!!score && score.strike > 0" class="mb-2">
+    <ion-col size="6" class="text-center column-score">
       Strike of {{score.strike}}
     </ion-col>
   </ion-row>

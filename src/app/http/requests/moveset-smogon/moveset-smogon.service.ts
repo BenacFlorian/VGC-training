@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, catchError, from, map, switchMap, of, throwError } from 'rxjs';
+import { Observable, catchError, from, map, switchMap, of, throwError, forkJoin } from 'rxjs';
 import { CapacitorHttp } from '@capacitor/core';
-
+import { UsageSmogonService } from '../usage-smogon/usage-smogon.service';
+import { LocalStorageService } from 'src/app/services/local-storage.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -10,7 +11,34 @@ export class MovesetSmogonService {
     private baseUrl = 'https://www.smogon.com/stats';
     private moveset: any;
 
-    constructor(private http: HttpClient) { }
+    constructor(
+        private http: HttpClient,
+        private usageSmogonService: UsageSmogonService,
+        private localStorageService: LocalStorageService
+    ) { }
+
+    getTopMoveset(): Observable<any[]> {
+        const topMoveset = this.localStorageService.getItem('topMoveset');
+        const topMovesetDate = this.localStorageService.getItem('topMovesetDate');
+        
+        const today = new Date();
+        const topMovesetDateObj = new Date(topMovesetDate);
+        if (topMoveset && topMovesetDateObj.setHours(0, 0, 0, 0) == today.setHours(0, 0, 0, 0)) {
+            return of(topMoveset);
+        }
+
+        return forkJoin([
+            this.usageSmogonService.getUsageData(),
+            this.getMovesetData()
+        ]).pipe(
+            map(([usageData, movesetData]) => {
+                const topMoveset =  movesetData.filter((pokemon: any) => usageData.some((usagePokemon: any) => usagePokemon.name === pokemon.name));
+                this.localStorageService.setItem('topMoveset', topMoveset);
+                this.localStorageService.setItem('topMovesetDate', new Date());
+                return topMoveset;
+            })
+        );
+    }
 
     getMovesetData(): Observable<any[]> {
         if(this.moveset){

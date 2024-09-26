@@ -5,6 +5,8 @@ import { PokemonService } from 'src/app/http/requests/pokemon/pokemon.service';
 import { FormattedPokemon, UsageSmogonService } from 'src/app/http/requests/usage-smogon/usage-smogon.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { LocalStorageService } from 'src/app/services/local-storage.service';
+
 @Component({
   selector: 'app-speed-quiz',
   templateUrl: './speed-quiz.page.html',
@@ -17,10 +19,13 @@ export class SpeedQuizPage implements OnInit {
   public pokemonTopUsage: FormattedPokemon[] = [];
   public poke: any;
   public isPokeLoaded: boolean = false;
+  public score: any;
 
-  constructor(private pokemonService: PokemonService, private usageSmogonService: UsageSmogonService, private router: Router) { }
+  constructor(private pokemonService: PokemonService, private usageSmogonService: UsageSmogonService, private router: Router, private localStorageService: LocalStorageService ) { }
 
   ngOnInit() {
+    const speedQuizData = this.localStorageService.getItem('speedQuizData');
+    this.score = speedQuizData.score;
     this.usageSmogonService.getUsageData().subscribe({
       next: (formattedData) => {
         this.pokemonTopUsage = formattedData;
@@ -41,6 +46,8 @@ export class SpeedQuizPage implements OnInit {
     this.pokemonService.fetchOneValidPokemon(this.pokemonTopUsage).subscribe((data)=>{
       this.poke = data;
       this.isPokeLoaded = true;
+      const speedQuizData = this.localStorageService.getItem('speedQuizData');
+      this.score = speedQuizData.score;
     });
   }
   backToMenu(){
