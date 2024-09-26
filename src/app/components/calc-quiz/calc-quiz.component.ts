@@ -111,7 +111,11 @@ export class CalcQuizComponent implements OnInit {
     if(name === 'lycanroc-midday') return 'lycanroc';
     if(name === 'mimikyu-disguised') return 'mimikyu';
     if(name === 'toxtricity-amped') return 'toxtricity';
-    if(name.includes('tauros')) return 'tauros';
+    if(name === 'tatsugiri-curly') return 'tatsugiri';
+    if(name === 'maushold-family-of-four') return 'maushold';
+    if(name === 'palafin-zero') return 'palafin';
+    if(name === 'tauros-paldea-blaze-breed') return 'tauros-paldea-blaze';
+    if(name === 'tauros-paldea-aqua-breed') return 'tauros-paldea-aqua';
     return name;
   }
 

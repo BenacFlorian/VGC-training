@@ -70,6 +70,10 @@ export class PokemonService {
   public getPokemons(){
     return this.pokemons;
   }
+  public getPokemonFromDB(name: string): any {
+    const formattedName = this.utilityService.sanitizeName(name);
+    return db.pokemons.where('name').equals(formattedName).first();
+  }
 
   insertPokemons(pokemons: any[]): Observable<number> {
     return from(

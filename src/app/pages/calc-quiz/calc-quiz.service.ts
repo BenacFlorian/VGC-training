@@ -53,8 +53,9 @@ export class CalcQuizService {
 
   private getPokemonWithMoves(pokemon: any): Observable<any> {
     const formattedName = pokemon.name.toLowerCase().replace(/ /g, '-');
-    return this.pokemonService.getPokemon(formattedName).pipe(
-      switchMap((pokemonDetails) => {
+    return from(this.pokemonService.getPokemonFromDB(formattedName)).pipe(
+      switchMap((data: any) => {
+        const pokemonDetails = JSON.parse(data.data);
         const movesToFetch = pokemon.moves.map((move:any) => move.name.toLowerCase().replace(/ /g, '-'));
         return forkJoin(movesToFetch.filter((move:string) => move !== '-').map((move:string) => {
           return this.movesService.getMove(move);
@@ -69,6 +70,7 @@ export class CalcQuizService {
               this.http.get(`https://pokeapi.co/api/v2/item/${item}`)
             ]).pipe(
               map(([abilityDetails, itemDetails]: [any, any]) => {
+                delete pokemonDetails.moves;
                 return {
                   ...pokemonDetails,
                   ability: abilityDetails,

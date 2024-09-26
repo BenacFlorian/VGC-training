@@ -5,6 +5,12 @@ import { addIcons } from 'ionicons';
 import { speedometer, timerOutline, barChartOutline } from 'ionicons/icons';
 import { Router } from '@angular/router';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
+import db from 'src/app/services/db.service';
+import { forkJoin, from } from 'rxjs';
+import { UsageSmogonService } from 'src/app/http/requests/usage-smogon/usage-smogon.service';
+import { MovesetSmogonService } from 'src/app/http/requests/moveset-smogon/moveset-smogon.service';
+import { AbilitiesService } from 'src/app/http/requests/abilities/abilities.service';
+import { PokemonService } from 'src/app/http/requests/pokemon/pokemon.service';
 @Component({
   selector: 'app-training-menu',
   templateUrl: './training-menu.page.html',
@@ -15,7 +21,7 @@ import { LocalStorageService } from 'src/app/services/local-storage.service';
 export class TrainingMenuPage {
   score: { speedVS: any; speedQuiz: any; defOrDefSpe: any; } | undefined;
 
-  constructor(private router: Router, private localStorageService: LocalStorageService) {
+  constructor(private router: Router, private localStorageService: LocalStorageService, private usageSmogonService: UsageSmogonService, private movesetSmogonService: MovesetSmogonService, private abilitiesService: AbilitiesService, private pokemonService: PokemonService) {
     addIcons({ speedometer, timerOutline, barChartOutline });
   }
 
@@ -64,5 +70,17 @@ export class TrainingMenuPage {
     this.localStorageService.removeItem('topMovesetDate'); 
     this.localStorageService.removeItem('abilities');
     this.localStorageService.removeItem('abilitiesDate');
+    from(db.pokemons.clear()).subscribe(() => {
+      forkJoin([
+        this.usageSmogonService.getUsageData(),
+        this.movesetSmogonService.getTopMoveset(),
+        this.abilitiesService.getAllAbilities()
+      ]).subscribe(async ([usage, moveset, abilities]) => {
+        this.pokemonService.getAllTopPokemon(usage).subscribe((pokemons) => {
+          console.log(pokemons);
+        });
+      });
+    });
+    
   }
 }
