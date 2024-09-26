@@ -12,7 +12,15 @@
           <ion-card-title>Welcome to VGC Training !</ion-card-title>
         </ion-card-header>
       
-        <ion-card-content>
+        <ion-card-content class="loading-content" *ngIf="!isDataLoaded">
+          <ion-row style="margin-left:41%;">
+            <img src="/assets/pokeball-loading.png" class="loading-image d-block" alt="Loading...">
+          </ion-row>
+          <ion-row style="margin-left:34%; margin-top: 5%; margin-bottom: 5%;">
+            <p class="d-block">Loading data ...</p>
+          </ion-row>
+        </ion-card-content>
+        <ion-card-content class="loading-content" *ngIf="isDataLoaded">
           <ion-button (click)="discoverPrograms()">
             See programs
           </ion-button>

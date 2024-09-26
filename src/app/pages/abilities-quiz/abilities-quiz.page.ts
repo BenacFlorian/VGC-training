@@ -53,14 +53,6 @@ export class AbilitiesQuizPage implements OnInit {
     ]).subscribe(
       ([allAbilities, quizAbilities]) => {
 
-        if(JSON.stringify(this.localStorageService.getItem('abilities').abilities) !== JSON.stringify(allAbilities)) {            
-          this.localStorageService.setItem('abilities', {
-            abilities: allAbilities,
-          });
-          this.localStorageService.setItem('abilitiesDate', {
-            date: new Date(),
-          });
-        }
         this.allTopAbilities = this.filterTopAbilities(allAbilities, quizAbilities);
         this.abilitiesQuizUtilityService.getAbilitiesWithDetails(this.allTopAbilities)
           .subscribe((abilitiesWithDetails) => {

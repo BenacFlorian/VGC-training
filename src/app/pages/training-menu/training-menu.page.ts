@@ -57,4 +57,12 @@ export class TrainingMenuPage {
     this.localStorageService.removeItem('abilitiesQuizData'); 
     this.localStorageService.removeItem('calcQuizData'); 
   }
+  resetData(){
+    this.localStorageService.removeItem('usages');
+    this.localStorageService.removeItem('usagesDate');
+    this.localStorageService.removeItem('topMoveset');
+    this.localStorageService.removeItem('topMovesetDate'); 
+    this.localStorageService.removeItem('abilities');
+    this.localStorageService.removeItem('abilitiesDate');
+  }
 }

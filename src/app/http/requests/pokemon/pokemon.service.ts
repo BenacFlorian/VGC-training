@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from '../../http.service';
-import { catchError, forkJoin, map, Observable, of, EMPTY } from 'rxjs';
+import { catchError, forkJoin, map, Observable, of, EMPTY, switchMap, from } from 'rxjs';
 import { FormattedPokemon } from '../usage-smogon/usage-smogon.service';
 import { UtilityService } from '../../../services/utility.service';
+import { LocalStorageService } from '../../../services/local-storage.service';
+import db from 'src/app/services/db.service';
+
 export interface Pokemon {
   name: string;
   sprites: {
@@ -22,7 +25,62 @@ export interface Pokemon {
 export class PokemonService {
   private baseUrl = 'https://pokeapi.co/api/v2/pokemon';
 
-  constructor(private httpService: HttpService, private utilityService: UtilityService) { }
+  public pokemons: any;
+
+  constructor(
+    private httpService: HttpService, 
+    private utilityService: UtilityService, 
+    private localStorageService: LocalStorageService
+  ) {}
+
+  public getAllTopPokemon(topPokemon: any[]): Observable<any[]> {
+    return from(db.pokemons.count()).pipe(
+      switchMap(pokemonCount => {
+        const cachedTopPokemonDate = this.localStorageService.getItem('topPokemonsDate');
+        const isCacheValid = cachedTopPokemonDate && 
+          new Date(cachedTopPokemonDate).setHours(0, 0, 0, 0) === new Date().setHours(0, 0, 0, 0);
+        
+        if (pokemonCount > 0 && isCacheValid) {
+          // Si des Pokémon existent déjà et que la date en cache est valide, on les retourne
+          return from(db.pokemons.toArray());
+        }
+  
+        // Si pokemonCount == 0 ou le cache est invalide, on doit recharger les données
+        return from(db.pokemons.clear()).pipe(  // On supprime toutes les lignes existantes
+          switchMap(() => 
+            forkJoin(
+              topPokemon.map(pokemon => this.getPokemon(pokemon.name.toLowerCase()))
+            )
+          ),
+          switchMap(pokemons => {
+            // Après avoir vidé la base, on insère les nouveaux Pokémon
+            return this.insertPokemons(pokemons).pipe(
+              switchMap(() => {
+                // Mise à jour de la date en cache et retour des Pokémon
+                this.localStorageService.setItem('topPokemonsDate', new Date());
+                return of(pokemons);
+              })
+            );
+          })
+        );
+      })
+    );
+  }
+
+  public getPokemons(){
+    return this.pokemons;
+  }
+
+  insertPokemons(pokemons: any[]): Observable<number> {
+    return from(
+      db.pokemons.bulkAdd(
+        pokemons.map(pokemon => ({
+          name: pokemon.name,
+          data: JSON.stringify(pokemon),
+        }))
+      )
+    );
+  }
 
   public fetchOneValidPokemon(pokemonTopUsage: any[]): Observable<any> {
     const indexPokeRandom = this.getOneRandomPokemon(pokemonTopUsage);
@@ -104,5 +162,9 @@ export class PokemonService {
   getPokemon(nameOrId: string | number): Observable<any> {
     const formattedName = this.utilityService.sanitizeName(nameOrId);
     return this.httpService.get<Pokemon>(`${this.baseUrl}/${formattedName}`);
+  }
+
+  getAllPokemon(): Observable<any> {
+    return this.httpService.get<Pokemon>(`${this.baseUrl}?limit=10000`);
   }
 }

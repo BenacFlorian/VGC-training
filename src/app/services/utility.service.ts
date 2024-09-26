@@ -4,8 +4,8 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class UtilityService {
-  getRandomElement(moves: any): any {
-    return moves[Math.floor(Math.random() * moves.length)];
+  getRandomElement(elements: any): any {
+    return elements[Math.floor(Math.random() * elements.length)];
   }
   sanitizeName(name: any) {
     if(name === 'basculegion') return 'basculegion-male';
@@ -15,7 +15,11 @@ export class UtilityService {
     if(name === 'lycanroc') return 'lycanroc-midday';
     if(name === 'mimikyu') return 'mimikyu-disguised';
     if(name === 'toxtricity') return 'toxtricity-amped';
-    if(name.includes('tauros')) return 'tauros';
+    if(name === 'tatsugiri') return 'tatsugiri-curly';
+    if(name === 'maushold') return 'maushold-family-of-four';
+    if(name === 'palafin') return 'palafin-zero';
+    if(name === 'tauros-paldea-blaze') return 'tauros-paldea-blaze-breed';
+    if(name === 'tauros-paldea-aqua') return 'tauros-paldea-aqua-breed';
     return name;
   }
   getAllAbilities(pokemonTopMoveset: any[]): any {
@@ -40,5 +44,24 @@ export class UtilityService {
   getRandomElements<T>(array: T[], count: number = 4): T[] {
     const shuffled = array.sort(() => 0.5 - Math.random());
     return shuffled.slice(0, count);
+  }
+
+  getTwoRandomPokemonsOrLog(pokemons: any[]): any[] | void {
+    if (pokemons.length < 1) {
+      console.log('no pokemons');
+      return;
+    }
+
+    const getRandomIndex = () => Math.floor(Math.random() * pokemons.length);
+    
+    let firstIndex = getRandomIndex();
+    let secondIndex = getRandomIndex();
+
+    // S'assurer que les deux indices sont différents
+    while (secondIndex === firstIndex && pokemons.length > 1) {
+      secondIndex = getRandomIndex();
+    }
+
+    return [pokemons[firstIndex], pokemons[secondIndex]];
   }
 }

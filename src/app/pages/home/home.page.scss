@@ -38,3 +38,49 @@
   position: relative;
   top: 70%;
 }
+
+.loading-image {
+  width: 50px; // Ajustez la taille selon vos préférences
+  height: 50px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+ion-row{
+  --ion-default-dynamic-font: -apple-system-body;
+  --ion-font-family: var(--ion-default-font);
+  --ion-safe-area-top: env(safe-area-inset-top);
+  --ion-safe-area-bottom: env(safe-area-inset-bottom);
+  --ion-default-font: "Roboto", "Helvetica Neue", sans-serif;
+  text-rendering: optimizeLegibility;
+  word-wrap: break-word;
+  text-size-adjust: none;
+  user-select: none;
+  --padding-top: 0px;
+  --padding-bottom: 0px;
+  --padding-start: 0px;
+  --padding-end: 0px;
+  --keyboard-offset: 0px;
+  --overflow: auto;
+  --offset-top: 0px;
+  --offset-bottom: 914px;
+  text-align: center;
+  --ion-safe-area-left: 0px;
+  --ion-safe-area-right: 0px;
+  -webkit-font-smoothing: antialiased;
+  color: var(--color);
+  font-family: var(--ion-font-family, inherit);
+  --background: var(--ion-card-background, var(--ion-item-background, var(--ion-background-color, #fff)));
+  --color: var(--ion-card-color, var(--ion-item-color, var(--ion-color-step-550, #737373)));
+  font-size: 0.875rem;
+  line-height: 1.5;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  display: flex;
+  width: 100%;
+}

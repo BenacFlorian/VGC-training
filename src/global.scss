@@ -156,7 +156,11 @@ body {
 .button-back{
   position: absolute;
   top: 0;
+  width: 33%;
   left: 0;
+}
+.d-block{
+  display: block;
 }
 
 .w-100{

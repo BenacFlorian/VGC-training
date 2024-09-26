@@ -33,6 +33,7 @@
     "@ionic/angular": "^7.0.0",
     "@smogon/calc": "^0.10.0",
     "angular-material-icons": "^0.7.1",
+    "dexie": "^4.0.8",
     "ionicons": "^7.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
