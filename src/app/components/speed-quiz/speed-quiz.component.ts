@@ -69,6 +69,7 @@ export class SpeedQuizComponent  implements OnInit {
   }
 
   validateGuess() {
+    if(this.isAnswered) return;
     if (this.userGuess === this.speed) {
       this.hasRightAnswer = true;
       if(!!this.score){

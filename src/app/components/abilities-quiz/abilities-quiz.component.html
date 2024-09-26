@@ -10,7 +10,7 @@
     </ion-col>
   </ion-row>
 
-  <ion-row *ngIf="score.strike > 0">
+  <ion-row *ngIf="!!score && score.strike > 0">
     <ion-col size="3" class="column">
     </ion-col>
     <ion-col size="6" class="text-center column">
@@ -27,7 +27,7 @@
   
   <ion-row class="mt-2 w-100">
     <ion-col size="6" class="text-center column-btn w-50" (click)="answer(0)">
-      <ion-button [ngClass]="{'good-answer-bg': rightAnswer === 0, 'bad-answer-bg': hasRightAnswer === false && rightAnswer !== 0}" class="left name light-gray-button w-100">{{abilities[0].name || 'Error'}}</ion-button>
+      <ion-button [ngClass]="{'good-answer-bg': rightAnswer === 0, 'bad-answer-bg': hasRightAnswer === false && rightAnswer !== 0}" class="left name light-gray-button w-100">{{abilities[0]?.name || 'Error'}}</ion-button>
     </ion-col>
     <ion-col size="6" class="text-center column-btn w-50" (click)="answer(1)">
       <ion-button [ngClass]="{'good-answer-bg': rightAnswer === 1, 'bad-answer-bg': hasRightAnswer === false && rightAnswer !== 1}" class="name light-gray-button w-100">{{abilities[1].name || 'Error'}}</ion-button>

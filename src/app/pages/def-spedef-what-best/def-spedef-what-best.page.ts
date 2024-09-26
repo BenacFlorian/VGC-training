@@ -7,6 +7,10 @@ import { Router } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { DefOrSpeDefComponent } from 'src/app/components/def-or-spe-def/def-or-spe-def.component';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
+import { UtilityService } from 'src/app/services/utility.service';
+import { timer } from 'rxjs';
+import { ChangeDetectorRef } from '@angular/core';
+
 @Component({
   selector: 'app-def-spedef-what-best',
   templateUrl: './def-spedef-what-best.page.html',
@@ -20,17 +24,29 @@ export class DefSpedefWhatBestPage implements OnInit {
   public poke: any;
   public isPokeLoaded: boolean = false;
   public score: any;
+  public pokemons: any[] = [];
 
-  constructor(private pokemonService: PokemonService, private usageSmogonService: UsageSmogonService, private router: Router, private localStorageService: LocalStorageService) { }
+  constructor(
+    private pokemonService: PokemonService, 
+    private usageSmogonService: UsageSmogonService, 
+    private router: Router, 
+    private localStorageService: LocalStorageService,
+    private utilityService: UtilityService,
+    private cdr: ChangeDetectorRef
+  ) { }
 
   ngOnInit() {
+
+    this.isPokeLoaded = false;
     const defOrDefSpeData = this.localStorageService.getItem('defOrDefSpeData');
     this.score = defOrDefSpeData.score;
+
     this.usageSmogonService.getUsageData().subscribe({
-      next: (formattedData) => {
-        this.pokemonTopUsage = formattedData;
-        this.pokemonService.fetchOneValidPokemon(this.pokemonTopUsage).subscribe((data)=>{
-          this.poke = data;
+      next: (formattedData) => {        
+        this.pokemonService.getAllTopPokemon(formattedData).subscribe((pokemons) => {
+          this.pokemons = pokemons;
+          const randomPokemons = this.utilityService.getTwoRandomPokemons(pokemons);
+          this.poke = JSON.parse(randomPokemons?.[0].data);
           this.isPokeLoaded = true;
         });
       },
@@ -43,10 +59,12 @@ export class DefSpedefWhatBestPage implements OnInit {
 
   public resetRequested(){
     this.isPokeLoaded = false;
-    this.pokemonService.fetchOneValidPokemon(this.pokemonTopUsage).subscribe((data)=>{
-      this.poke = data;
-      const defOrDefSpeData = this.localStorageService.getItem('defOrDefSpeData');
-      this.score = defOrDefSpeData.score;
+    const randomPokemons = this.utilityService.getTwoRandomPokemons(this.pokemons);
+    this.poke = JSON.parse(randomPokemons?.[0].data);
+    this.cdr.detectChanges();
+    const defOrDefSpeData = this.localStorageService.getItem('defOrDefSpeData');
+    this.score = defOrDefSpeData.score;
+    timer(150).subscribe(() => {
       this.isPokeLoaded = true;
     });
   }

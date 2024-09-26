@@ -116,6 +116,7 @@ export class CalcQuizComponent implements OnInit {
   }
 
   answer(answer: string) {
+    if(this.isAnswered) return;
     this.answerChoose = answer as 'KO' | '50-' | '50+';
     const rightAnswer = this.calcQuizComponentService.calculateKO(this.leftSide, this.rightSide, this.randomAttack);
     this.rightAnswer = rightAnswer;

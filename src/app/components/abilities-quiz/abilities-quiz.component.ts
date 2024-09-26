@@ -26,7 +26,6 @@ export class AbilitiesQuizComponent implements OnInit {
   constructor(private localStorageService: LocalStorageService) { }
 
   ngOnInit() {
-    console.log(this.abilities);
     this.selectRandomAbility();
     const abilitiesQuizData = this.localStorageService.getItem('abilitiesQuizData');
     if(abilitiesQuizData.score){

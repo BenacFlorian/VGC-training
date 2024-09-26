@@ -1,7 +1,7 @@
 <div class="container">  
   <ion-content [fullscreen]="true">  
     <div id="container">
-      <ion-card class="score_card" *ngIf="isQuestionCreated && !!score?.bestStrike">  
+      <ion-card class="score_card" *ngIf="isQuestionCreated && !!score &&!!score?.bestStrike">  
         <ion-card-content>
           <div class="score_content">
             <p>Best strike: {{score?.bestStrike}}</p>

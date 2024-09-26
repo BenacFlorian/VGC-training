@@ -6,7 +6,9 @@ import { FormattedPokemon, UsageSmogonService } from 'src/app/http/requests/usag
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
-
+import { UtilityService } from 'src/app/services/utility.service';
+import { timer } from 'rxjs';
+import { ChangeDetectorRef } from '@angular/core';
 @Component({
   selector: 'app-speed-quiz',
   templateUrl: './speed-quiz.page.html',
@@ -20,17 +22,28 @@ export class SpeedQuizPage implements OnInit {
   public poke: any;
   public isPokeLoaded: boolean = false;
   public score: any;
-
-  constructor(private pokemonService: PokemonService, private usageSmogonService: UsageSmogonService, private router: Router, private localStorageService: LocalStorageService ) { }
+  public pokemons: any[] = [];
+  constructor(
+    private pokemonService: PokemonService, 
+    private usageSmogonService: UsageSmogonService, 
+    private router: Router, 
+    private localStorageService: LocalStorageService,
+    private utilityService: UtilityService,
+    private cdr: ChangeDetectorRef
+  ) { }
 
   ngOnInit() {
+
+    this.isPokeLoaded = false;
     const speedQuizData = this.localStorageService.getItem('speedQuizData');
     this.score = speedQuizData.score;
+
     this.usageSmogonService.getUsageData().subscribe({
-      next: (formattedData) => {
-        this.pokemonTopUsage = formattedData;
-        this.pokemonService.fetchOneValidPokemon(this.pokemonTopUsage).subscribe((data)=>{
-          this.poke = data;
+      next: (formattedData) => {        
+        this.pokemonService.getAllTopPokemon(formattedData).subscribe((pokemons) => {
+          this.pokemons = pokemons;
+          const randomPokemons = this.utilityService.getTwoRandomPokemons(pokemons);
+          this.poke = JSON.parse(randomPokemons?.[0].data);
           this.isPokeLoaded = true;
         });
       },
@@ -43,13 +56,16 @@ export class SpeedQuizPage implements OnInit {
 
   public resetRequested(){
     this.isPokeLoaded = false;
-    this.pokemonService.fetchOneValidPokemon(this.pokemonTopUsage).subscribe((data)=>{
-      this.poke = data;
+    const randomPokemons = this.utilityService.getTwoRandomPokemons(this.pokemons);
+    this.poke = JSON.parse(randomPokemons?.[0].data);
+    this.cdr.detectChanges();
+    const speedQuizData = this.localStorageService.getItem('speedQuizData');
+    this.score = speedQuizData.score;
+    timer(150).subscribe(() => {
       this.isPokeLoaded = true;
-      const speedQuizData = this.localStorageService.getItem('speedQuizData');
-      this.score = speedQuizData.score;
     });
   }
+  
   backToMenu(){
     this.router.navigateByUrl('/training-menu');
   }

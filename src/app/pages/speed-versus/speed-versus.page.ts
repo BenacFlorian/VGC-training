@@ -1,13 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { SpeedVersusComponent } from '../../components/speed-versus/speed-versus.component';
 import { FormattedPokemon, UsageSmogonService } from '../../http/requests/usage-smogon/usage-smogon.service';
-import { forkJoin, Observable, of } from 'rxjs';
+import { forkJoin, Observable, of, timer } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { PokemonService } from 'src/app/http/requests/pokemon/pokemon.service';
 import { Router } from '@angular/router';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
+import { UtilityService } from 'src/app/services/utility.service';
 @Component({
   selector: 'app-speed-versus',
   templateUrl: './speed-versus.page.html',
@@ -20,21 +21,31 @@ export class SpeedVersusPage implements OnInit {
   pokeRight: any;
   is2PokeLoaded: boolean = false;
   score: any;
+  pokemons: any[] = [];
 
-  constructor(private pokemonService: PokemonService, private usageSmogonService: UsageSmogonService, private router: Router, private localStorageService: LocalStorageService) {}
+  constructor(
+    private pokemonService: PokemonService,
+    private usageSmogonService: UsageSmogonService,
+    private router: Router,
+    private cdr: ChangeDetectorRef,
+    private localStorageService: LocalStorageService,
+    private utilityService: UtilityService
+  ) {}
 
-  pokemonTopUsage: FormattedPokemon[] = [];
 
   ngOnInit() {
 
+    this.is2PokeLoaded = false;
     const speedVersusData = this.localStorageService.getItem('speedVersusData');
     this.score = speedVersusData.score;
+
     this.usageSmogonService.getUsageData().subscribe({
-      next: (formattedData) => {
-        this.pokemonTopUsage = formattedData;
-        this.pokemonService.fetchTwoValidPokemon(this.pokemonTopUsage).subscribe((data)=>{
-          this.pokeLeft = data[0];
-          this.pokeRight = data[1];
+      next: (formattedData) => {        
+        this.pokemonService.getAllTopPokemon(formattedData).subscribe((pokemons) => {
+          this.pokemons = pokemons;
+          const randomPokemons = this.utilityService.getTwoRandomPokemons(pokemons);
+          this.pokeLeft = JSON.parse(randomPokemons?.[0].data);
+          this.pokeRight = JSON.parse(randomPokemons?.[1].data);
           this.is2PokeLoaded = true;
         });
       },
@@ -47,12 +58,14 @@ export class SpeedVersusPage implements OnInit {
 
   public resetRequested(){
     this.is2PokeLoaded = false;
-    this.pokemonService.fetchTwoValidPokemon(this.pokemonTopUsage).subscribe((data)=>{
-      this.pokeLeft = data[0];
-      this.pokeRight = data[1];
+    const randomPokemons = this.utilityService.getTwoRandomPokemons(this.pokemons);
+    this.pokeLeft = JSON.parse(randomPokemons?.[0].data);
+    this.pokeRight = JSON.parse(randomPokemons?.[1].data);
+    this.cdr.detectChanges();
+    const speedVersusData = this.localStorageService.getItem('speedVersusData');
+    this.score = speedVersusData.score;
+    timer(150).subscribe(() => {
       this.is2PokeLoaded = true;
-      const speedVersusData = this.localStorageService.getItem('speedVersusData');
-      this.score = speedVersusData.score;
     });
   }
 

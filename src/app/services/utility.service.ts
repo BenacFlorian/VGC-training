@@ -46,7 +46,7 @@ export class UtilityService {
     return shuffled.slice(0, count);
   }
 
-  getTwoRandomPokemonsOrLog(pokemons: any[]): any[] | void {
+  getTwoRandomPokemons(pokemons: any[]): any[] | void {
     if (pokemons.length < 1) {
       console.log('no pokemons');
       return;

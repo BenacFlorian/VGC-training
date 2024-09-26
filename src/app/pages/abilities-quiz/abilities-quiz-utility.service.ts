@@ -16,7 +16,6 @@ export class AbilitiesQuizUtilityService {
     private usageSmogonService: UsageSmogonService,
     private movesetSmogonService: MovesetSmogonService,
     private utilityService: UtilityService,
-    private abilitiesService: AbilitiesService,
     private http: HttpClient
   ) { }
 
