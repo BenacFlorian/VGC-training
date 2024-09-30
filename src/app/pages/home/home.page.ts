@@ -10,12 +10,16 @@ import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Component } from '@angular/core';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule],
+  imports: [IonicModule, CommonModule, FormsModule, MatCardModule, MatButtonModule, MatInputModule],
 })
 export class HomePage {
 
@@ -39,7 +43,9 @@ export class HomePage {
       this.movesetSmogonService.getTopMoveset(),
       this.abilitiesService.getAllAbilities()
     ]).subscribe(async ([usage, moveset, abilities]) => {
+      console.log("usage");
       this.pokemonService.getAllTopPokemon(usage).subscribe((pokemons) => {
+        console.log("pokemons");
         this.isDataLoaded = true;
       });
     });

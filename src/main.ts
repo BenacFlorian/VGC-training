@@ -6,12 +6,13 @@ import { importProvidersFrom } from '@angular/core';
 
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideIonicAngular(),
     provideRouter(routes, withPreloading(PreloadAllModules)),
-    importProvidersFrom(HttpClientModule), // Ajoutez cette ligne
+    importProvidersFrom(HttpClientModule), provideAnimationsAsync(), // Ajoutez cette ligne
   ],
 });

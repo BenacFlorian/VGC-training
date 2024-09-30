@@ -9,13 +9,15 @@ import { forkJoin, timer } from 'rxjs';
 import { UtilityService } from '../../services/utility.service';
 import { LocalStorageService } from '../../services/local-storage.service';
 import { ChangeDetectorRef } from '@angular/core';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
 @Component({
   selector: 'app-abilities-quiz',
   templateUrl: './abilities-quiz.page.html',
   styleUrls: ['./abilities-quiz.page.scss'],
   providers: [AbilitiesQuizUtilityService],
   standalone: true,
-  imports: [IonicModule, CommonModule, AbilitiesQuizComponent]
+  imports: [IonicModule, CommonModule, AbilitiesQuizComponent, MatCardModule, MatButtonModule]
 })
 export class AbilitiesQuizPage implements OnInit {
   abilities: string[] = [];

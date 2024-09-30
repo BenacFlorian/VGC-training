@@ -9,12 +9,14 @@ import { PokemonService } from 'src/app/http/requests/pokemon/pokemon.service';
 import { Router } from '@angular/router';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { UtilityService } from 'src/app/services/utility.service';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
 @Component({
   selector: 'app-speed-versus',
   templateUrl: './speed-versus.page.html',
   styleUrls: ['./speed-versus.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, SpeedVersusComponent]
+  imports: [IonicModule, CommonModule, SpeedVersusComponent, MatCardModule, MatButtonModule]
 })
 export class SpeedVersusPage implements OnInit {
   pokeLeft: any;

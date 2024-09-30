@@ -6,12 +6,13 @@ import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 @Component({
   selector: 'comp-def-or-spe-def',
   templateUrl: './def-or-spe-def.component.html',
   styleUrls: ['./def-or-spe-def.component.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule, MatButtonModule],
 })
 export class DefOrSpeDefComponent  implements OnInit {
   @Input() poke!: Pokemon;

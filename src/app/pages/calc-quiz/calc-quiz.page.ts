@@ -8,13 +8,14 @@ import { CalcQuizComponent } from 'src/app/components/calc-quiz/calc-quiz.compon
 import { switchMap } from 'rxjs';
 import { CalcQuizService } from './calc-quiz.service';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
-
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 @Component({
   selector: 'app-calc-quiz',
   templateUrl: './calc-quiz.page.html',
   styleUrls: ['./calc-quiz.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, CalcQuizComponent]
+  imports: [IonicModule, CommonModule, FormsModule, CalcQuizComponent, MatButtonModule, MatCardModule]
 })
 export class CalcQuizPage implements OnInit {
   pokeLeft: any;

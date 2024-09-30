@@ -2,12 +2,13 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
+import { MatButtonModule } from '@angular/material/button';
 @Component({
   selector: 'comp-abilities-quiz',
   templateUrl: './abilities-quiz.component.html',
   styleUrls: ['./abilities-quiz.component.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule]
+  imports: [IonicModule, CommonModule, MatButtonModule]
 })
 export class AbilitiesQuizComponent implements OnInit {
   @Input() abilities: any[] = [];

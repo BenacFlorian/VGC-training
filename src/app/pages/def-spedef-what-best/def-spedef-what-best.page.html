@@ -2,36 +2,36 @@
   <ion-content [fullscreen]="true">  
     <div id="container">
 
-      <ion-card class="score_card" *ngIf="isPokeLoaded && !!score?.bestStrike">  
-        <ion-card-content>
+      <mat-card class="score_card ml-2 mr-2" *ngIf="isPokeLoaded && !!score?.bestStrike">  
+        <mat-card-content>
           <div class="score_content">
             <p>Best strike: {{score?.bestStrike}}</p>
           </div>
-        </ion-card-content>
-      </ion-card>
-      <ion-card class="speed_quiz_card">      
-        <ion-card-content>
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="speed_quiz_card  ml-2 mr-2">      
+        <mat-card-content>
           <ion-grid>
-            <ion-card-header>
-              <ion-card-title>Is this base stats Pokemon more Def or more SpD ?</ion-card-title>
-            </ion-card-header>
+            <mat-card-header>
+              <mat-card-title class="text-center">Is this base stats Pokemon more Def or more SpD ?</mat-card-title>
+            </mat-card-header>
 
-            <ion-card-content *ngIf="isPokeLoaded">
+            <mat-card-content *ngIf="isPokeLoaded">
               <comp-def-or-spe-def
                 [poke]="poke"
                 (resetRequested)="resetRequested()"
               ></comp-def-or-spe-def>
-            </ion-card-content>
+            </mat-card-content>
 
-            <ion-card-content *ngIf="!isPokeLoaded" class="loading-content">
+            <mat-card-content *ngIf="!isPokeLoaded" class="loading-content">
               <img src="/assets/pokeball-loading.png" class="loading-image" alt="Loading...">
-            </ion-card-content>
+            </mat-card-content>
           </ion-grid>
-        </ion-card-content>
-      </ion-card>
+        </mat-card-content>
+      </mat-card>
     </div>
   </ion-content>
 </div>
-<ion-button class="button-back" (click)="backToMenu()">
-  Back to menu
-</ion-button>
+<button mat-raised-button class="button-back" (click)="backToMenu()">
+  Menu
+</button>

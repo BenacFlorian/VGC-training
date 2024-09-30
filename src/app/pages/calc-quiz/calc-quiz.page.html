@@ -1,37 +1,36 @@
 <div class="container">  
   <ion-content [fullscreen]="true">  
     <div id="container">
-      <ion-card class="score_card" *ngIf="is2PokeLoaded && !!score?.bestStrike">  
-        <ion-card-content>
+      <mat-card class="score_card ml-2 mr-2" *ngIf="is2PokeLoaded && !!score?.bestStrike">  
+        <mat-card-content>
           <div class="score_content">
             <p>Best strike: {{score?.bestStrike}}</p>
           </div>
-        </ion-card-content>
-      </ion-card>
-      <ion-card class="calc_quiz_card">   
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="calc_quiz_card ml-2 mr-2">   
         
-        <ion-card-header>
-          <ion-card-title> What damage does this attack do ?</ion-card-title>
-          <ion-card-subtitle>(max Att/SpA, max Hp/Def/SpD)</ion-card-subtitle>
-        </ion-card-header>
+        <mat-card-header>
+          <mat-card-title class="text-center"> What damage does this attack do ?</mat-card-title>
+          <mat-card-subtitle class="text-center">(max Att/SpA, max Hp/Def/SpD)</mat-card-subtitle>
+        </mat-card-header>
 
-        <ion-card-content *ngIf="is2PokeLoaded">
+        <mat-card-content *ngIf="is2PokeLoaded">
           <comp-calc-quiz
             [leftSide]="pokeLeft"
             [rightSide]="pokeRight"
             (resetRequested)="resetRequested()"
           ></comp-calc-quiz>
-        </ion-card-content>
+        </mat-card-content>
 
-        <ion-card-content *ngIf="!is2PokeLoaded" class="loading-content">
+        <mat-card-content *ngIf="!is2PokeLoaded" class="loading-content">
           <img src="/assets/pokeball-loading.png" class="loading-image" alt="Loading...">
-        </ion-card-content>
-      </ion-card>
+        </mat-card-content>
+      </mat-card>
     </div>
   </ion-content>
 </div>
 
-<ion-button class="button-back" (click)="backToMenu()">
-  Back to menu
-</ion-button>
-
+<button mat-raised-button class="button-back" (click)="backToMenu()">
+  Menu
+</button>

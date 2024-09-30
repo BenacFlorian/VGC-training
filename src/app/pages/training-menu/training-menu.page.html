@@ -1,78 +1,78 @@
 <div class="container">  
   <ion-content [fullscreen]="true">  
     <div id="container">
-      <ion-card class="training_menu_card">      
-        <ion-card-content>
+      <mat-card class="training_menu_card mr-2 ml-2">      
+        <mat-card-content>
           <ion-grid class="w-100">
-            <ion-row class="w-100">
+            <ion-row class="w-100" style="margin-top:1%;">
               <ion-col class="training-menu-column">
-                <ion-button (click)="goToSpeedVersus()" class="w-100 custom-button">
+                <button  mat-fab extended  (click)="goToSpeedVersus()" class="w-100 custom-button">
                   <div class="button-content">
                     <span class="material-symbols-outlined icon">
                       speed
                     </span>
                     <ion-label>Speed VS ({{getScore().speedVS || 0}}%)</ion-label>
                   </div>
-                </ion-button>
+                </button>
               </ion-col>
             </ion-row>
-            <ion-row class="w-100">
+            <ion-row class="w-100" style="margin-top:1%;">
               <ion-col class="training-menu-column">
-                <ion-button (click)="goToSpeedQuiz()" class="w-100 custom-button">
+                <button  mat-fab extended  (click)="goToSpeedQuiz()" class="w-100 custom-button">
                   <div class="button-content">
                     <span class="material-symbols-outlined icon">
                       quiz
                     </span>
                     <ion-label>Speed quiz ({{getScore().speedQuiz || 0}}%)</ion-label>
                   </div>
-                </ion-button>
+                </button>
               </ion-col>
             </ion-row>
-            <ion-row class="w-100">
+            <ion-row class="w-100" style="margin-top:1%;">
               <ion-col class="training-menu-column">
-                <ion-button (click)="goToDefOrSpedDef()" class="w-100 custom-button">
+                <button  mat-fab extended  (click)="goToDefOrSpedDef()" class="w-100 custom-button">
                   <div class="button-content">
                     <span class="material-symbols-outlined icon">
                       shield_question
                     </span>
                     <ion-label>Def or Spe Def ({{getScore().defOrDefSpe || 0}}%)</ion-label>
                   </div>
-                </ion-button>
+                </button>
               </ion-col>
             </ion-row>
-            <ion-row class="w-100">
+            <ion-row class="w-100" style="margin-top:1%;">
               <ion-col class="training-menu-column">
-                <ion-button (click)="goToCalcQuiz()" class="w-100 custom-button">
+                <button mat-fab extended  (click)="goToCalcQuiz()" class="w-100 custom-button">
                   <div class="button-content">
                     <span class="material-symbols-outlined icon">
                       swords
                     </span>
                     <ion-label>Calc quiz ({{getScore().calcQuiz || 0}}%)</ion-label>
                   </div>
-                </ion-button>
+                </button>
               </ion-col>
             </ion-row>
-            <ion-row class="w-100">
+            <ion-row class="w-100" style="margin-top:1%;">
               <ion-col class="training-menu-column">
-                <ion-button (click)="goToAbilitiesQuiz()" class="w-100 custom-button">
+                <button mat-fab extended (click)="goToAbilitiesQuiz()" class="w-100 custom-button">
                   <div class="button-content">
                     <span class="material-symbols-outlined icon">
                       school
                     </span>
                     <ion-label>Abilities ({{getScore().abilitiesQuiz || 0}}%)</ion-label>
                   </div>
-                </ion-button>
+                </button>
               </ion-col>
             </ion-row>
           </ion-grid>
-        </ion-card-content>
-      </ion-card>
+        </mat-card-content>
+      </mat-card>
     </div>
   </ion-content>
 </div>
-<ion-button class="button-back" (click)="resetStats()">
+<button mat-raised-button class="button-back" (click)="resetStats()">
   Reset stats
-</ion-button>
-<ion-button class="button-reset-data" (click)="resetData()">
+</button>
+<button mat-raised-button class="button-reset-data" (click)="resetData()">
   Reset data
-</ion-button>
+</button>

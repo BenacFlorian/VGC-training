@@ -5,7 +5,7 @@ import { IonicModule } from '@ionic/angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { UtilityService } from 'src/app/services/utility.service';
-
+import { MatButtonModule } from '@angular/material/button';
 
 interface ScoreSpeedQuiz {
   nbGoodAnswer: number;
@@ -17,7 +17,7 @@ interface ScoreSpeedQuiz {
   templateUrl: './speed-quiz.component.html',
   styleUrls: ['./speed-quiz.component.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule, MatButtonModule],
 })
 export class SpeedQuizComponent  implements OnInit {
   @Input() poke!: Pokemon;

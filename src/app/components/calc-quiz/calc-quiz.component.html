@@ -1,12 +1,12 @@
 <ion-grid>
 
   <ion-row *ngIf="!!score && (score.nbGoodAnswer+score.nbBadAnswer) > 0">
-    <ion-col size="6" class="text-center column-score">
+    <ion-col class="text-center column-score w-100">
       {{score.percentGoodAnswer}}% of good answers
     </ion-col>
   </ion-row>
-  <ion-row *ngIf="!!score && score.strike > 0">
-    <ion-col size="6" class="text-center column-score">
+  <ion-row *ngIf="!!score && score.strike > 0" class="mb-2">
+    <ion-col class="text-center column-score w-100">
       Strike of {{score.strike}}
     </ion-col>
   </ion-row>
@@ -49,13 +49,13 @@
       <td class="w-50">
         <div class="d-inline-block w-20 float-left text-left">Ab. : </div>
         <div class="d-inline-block w-80 float-left text-left">
-          <p class="speed align-left ml-2 black">{{utilityService.capitalizeFirstLetter(leftSide.ability.name)}}</p>
+          <p class="speed align-left ml-2 black" style="margin:0;">{{utilityService.capitalizeFirstLetter(leftSide.ability.name)}}</p>
         </div>        
       </td>
       <td class="w-50">
         <div class="d-inline-block w-40 float-left text-left pl-4">Ab. : </div>
         <div class="d-inline-block w-60 float-left text-left">
-          <p class="speed align-left ml-2 black">{{utilityService.capitalizeFirstLetter(rightSide.ability.name)}}</p>
+          <p class="speed align-left ml-2 black" style="margin:0;">{{utilityService.capitalizeFirstLetter(rightSide.ability.name)}}</p>
         </div>      
       </td>
     </tr>
@@ -65,7 +65,7 @@
           <img [src]="items.left.src"  style="height: 25px;">
         </div>
         <div class="d-inline-block w-80 float-left text-left">
-          <p class="ml-2 text-left black">{{items.left.name}}</p>
+          <p class="ml-2 text-left black" style="margin:0;">{{items.left.name}}</p>
         </div>
       </td>
       <td class="w-50 pt-2">
@@ -73,7 +73,7 @@
           <img [src]="items.right.src"  style="height: 25px;">
         </div>
         <div class="d-inline-block w-60 float-left text-left">
-          <p class="ml-2 text-left black">{{items.right.name}}</p>
+          <p class="ml-2 text-left black" style="margin:0;">{{items.right.name}}</p>
         </div>
       </td>
     </tr>
@@ -83,7 +83,7 @@
           <img [src]="srcType"  style="height: 22px;">
         </div>
         <div class="d-inline-block w-80 float-left text-left">
-          <p class="ml-2 text-left black">{{nameAttack}}</p>
+          <p class="ml-2 text-left black" style="margin:0;">{{nameAttack}}</p>
         </div>
       </td>
     </tr>
@@ -93,7 +93,7 @@
           <img [src]="srcCategory"  style="width: 24px; height: 21px;">
         </div>
         <div class="d-inline-block w-80 float-left text-left">
-          <p class="ml-2 text-left black">{{powerAttack}}</p>
+          <p class="ml-2 text-left black" style="margin:0;">{{powerAttack}}</p>
         </div>
       </td>
     </tr>
@@ -101,7 +101,7 @@
   <ion-row *ngIf="isAnswered">
     <ion-col size="12" class="w-100 d-flex">
       <ion-row class="align-items-start" style="margin-left: 10%; text-align: left;">
-        <p>{{calc.calc1}}</p>
+        <p style="margin-bottom: 0;">{{calc.calc1}}</p>
       </ion-row>
     </ion-col>
   </ion-row>
@@ -122,18 +122,19 @@
 
   <ion-row class="mt-2 w-100">
     <ion-col size="4" class="text-center column-calc-versus d-flex" (click)="answer('kill')">
-      <ion-button [ngClass]="{'good-answer-bg': rightAnswer.result === 'KO', 'bad-answer-bg': hasRightAnswer === false && !!rightAnswer.result && rightAnswer.result !== 'KO'}" class="left name light-gray-button w-100">KO</ion-button>
+      <button  mat-stroked-button [ngClass]="{'good-answer-bg': rightAnswer.result === 'KO', 'bad-answer-bg': hasRightAnswer === false && !!rightAnswer.result && rightAnswer.result !== 'KO'}" class="left name light-gray-button w-100">KO</button>
     </ion-col>
     <ion-col size="4" class="text-center column-calc-versus d-flex" (click)="answer('50+')">
-      <ion-button [ngClass]="{'good-answer-bg': rightAnswer.result === '50+', 'bad-answer-bg': hasRightAnswer === false && !!rightAnswer.result && rightAnswer.result !== '50+'}" class="name light-gray-button w-100">> 50%</ion-button>
+      <button  mat-stroked-button [ngClass]="{'good-answer-bg': rightAnswer.result === '50+', 'bad-answer-bg': hasRightAnswer === false && !!rightAnswer.result && rightAnswer.result !== '50+'}" class="name light-gray-button w-100">> 50%</button>
     </ion-col>
     <ion-col size="4" class="text-center column-calc-versus d-flex" (click)="answer('50-')">
-      <ion-button [ngClass]="{'good-answer-bg': rightAnswer.result === '50-', 'bad-answer-bg': hasRightAnswer === false && !!rightAnswer.result && rightAnswer.result !== '50-'}" class="name light-gray-button w-100">< 50%</ion-button>
+      <button  mat-stroked-button [ngClass]="{'good-answer-bg': rightAnswer.result === '50-', 'bad-answer-bg': hasRightAnswer === false && !!rightAnswer.result && rightAnswer.result !== '50-'}" class="name light-gray-button w-100">< 50%</button>
     </ion-col>
   </ion-row>
+
   <ion-row class="mt-2" *ngIf="isAnswered">
-    <ion-col size="12" class="ion-text-end next-button col-12" style="padding: 0;">
-      <ion-button class="name light-gray-button col-4" (click)="reinitVersus()"style="margin:0;">Next</ion-button>
+    <ion-col size="12" class="ion-text-end next-button col-12" style="padding: 0; padding-top: 5%;">
+      <button  mat-stroked-button  class="button-next light-gray-button col-4" (click)="reinitVersus()"style="margin:0;">Next</button>
     </ion-col>
   </ion-row>
 </ion-grid>

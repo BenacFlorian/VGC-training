@@ -15,17 +15,20 @@
 .name{
     color: black;
     font-weight: bold;
-    font-size: 10px;
-    width: 100%; // Assurez-vous que le bouton prend toute la largeur de la colonne
+    font-size: 14px !important;
+    width: 100%;
+    padding: 0 !important;// Assurez-vous que le bouton prend toute la largeur de la colonne
 }
 .VS{
+    padding-top: 30%;
     font-size: 24px;
     text-align: center;
     width: 100%;
     margin: 0;
 }
 button{
-    background: gainsboro;
+    font-size: 20px;
+    // background: gainsboro;
     width: 100%; // Assurez-vous que le bouton prend toute la largeur de la colonne
 }
 .good-answer ion-button button{
@@ -73,7 +76,9 @@ ion-button::part(native) {
     display: flex;
     align-items: flex-start;
 }
-
+.button-next{
+    width: 33%;
+}
 .column-speed-versus {
     display: flex;
     height: 100%;
@@ -84,7 +89,7 @@ ion-button::part(native) {
 .column-score {
     display: flex;
     height: 100%;
-    width:100%;
+    width:100% !important;
     align-items: center;
     justify-content: center;
 }

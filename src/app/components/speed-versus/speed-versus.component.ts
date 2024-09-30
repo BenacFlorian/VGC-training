@@ -3,6 +3,9 @@ import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { UtilityService } from 'src/app/services/utility.service';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+
 interface Pokemon {
   name: string;
   sprites: {
@@ -21,7 +24,7 @@ interface Pokemon {
   templateUrl: './speed-versus.component.html',
   styleUrls: ['./speed-versus.component.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule]
+  imports: [IonicModule, CommonModule, MatCardModule, MatButtonModule]
 })
 export class SpeedVersusComponent implements OnInit {
   @Input() leftSide!: Pokemon;

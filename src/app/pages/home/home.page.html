@@ -7,6 +7,40 @@
     </ion-header>
   
     <div id="container">
+      <!-- Remplacement de ion-card par mat-card -->
+      <mat-card class="welcome_card">
+        <mat-card-header class="w-100">
+          <mat-card-title class="mat-mdc-card-title text-center w-100 mb-3 title">Welcome to VGC Training !</mat-card-title>
+        </mat-card-header>
+      
+        <mat-card-content class="loading-content" *ngIf="!isDataLoaded">
+          <ion-row style="margin-left:41%;">
+            <img src="/assets/pokeball-loading.png" class="loading-image d-block" alt="Loading...">
+          </ion-row>
+          <ion-row style="margin-left:34%; margin-top: 5%; margin-bottom: 5%;">
+            <p class="d-block">Loading data ...</p>
+          </ion-row>
+        </mat-card-content>
+        <mat-card-content class="loading-content" *ngIf="isDataLoaded">
+          <button mat-raised-button (click)="discoverPrograms()">
+            See programs
+          </button>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </ion-content>
+</div>
+
+
+<!-- <div class="container">  
+  <ion-content [fullscreen]="true">
+    <ion-header collapse="condense">
+      <ion-toolbar>
+        <ion-title size="large">VGC Training</ion-title>
+      </ion-toolbar>
+    </ion-header>
+  
+    <div id="container">
       <ion-card class="welcome_card">
         <ion-card-header>
           <ion-card-title>Welcome to VGC Training !</ion-card-title>
@@ -28,4 +62,5 @@
       </ion-card>
     </div>
   </ion-content>
-</div>
+</div> -->
+

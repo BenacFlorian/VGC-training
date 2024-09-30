@@ -10,13 +10,15 @@ import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { UtilityService } from 'src/app/services/utility.service';
 import { timer } from 'rxjs';
 import { ChangeDetectorRef } from '@angular/core';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-def-spedef-what-best',
   templateUrl: './def-spedef-what-best.page.html',
   styleUrls: ['./def-spedef-what-best.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, DefOrSpeDefComponent]
+  imports: [IonicModule, CommonModule, FormsModule, DefOrSpeDefComponent, MatCardModule, MatButtonModule]
 })
 export class DefSpedefWhatBestPage implements OnInit {
 

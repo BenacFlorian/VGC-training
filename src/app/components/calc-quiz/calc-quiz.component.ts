@@ -6,12 +6,13 @@ import { CalcQuizComponentService } from './calc-quiz.service';
 import { Pokemon } from '@smogon/calc';
 import { UtilityService } from 'src/app/services/utility.service';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
+import { MatButtonModule } from '@angular/material/button';
 @Component({
   selector: 'comp-calc-quiz',
   templateUrl: './calc-quiz.component.html',
   styleUrls: ['./calc-quiz.component.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule]
+  imports: [IonicModule, CommonModule, MatButtonModule]
 })
 export class CalcQuizComponent implements OnInit {
   @Input() leftSide!: any;

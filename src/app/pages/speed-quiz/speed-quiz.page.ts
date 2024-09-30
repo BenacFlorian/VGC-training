@@ -9,12 +9,15 @@ import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { UtilityService } from 'src/app/services/utility.service';
 import { timer } from 'rxjs';
 import { ChangeDetectorRef } from '@angular/core';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+
 @Component({
   selector: 'app-speed-quiz',
   templateUrl: './speed-quiz.page.html',
   styleUrls: ['./speed-quiz.page.scss'],
   standalone: true,
-  imports: [IonicModule, SpeedQuizComponent, CommonModule]
+  imports: [IonicModule, SpeedQuizComponent, CommonModule, MatCardModule, MatButtonModule]
 })
 export class SpeedQuizPage implements OnInit {
 

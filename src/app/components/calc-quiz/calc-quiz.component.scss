@@ -100,6 +100,12 @@ ion-row{
     width: 100%;
 }
 
+.w-50{
+width: 50% !important;
+}
+.w-100{
+width: 100% !important;
+}
 .next-button {
     ion-button {
         width: 33%; // Permet au bouton de s'ajuster à son contenu

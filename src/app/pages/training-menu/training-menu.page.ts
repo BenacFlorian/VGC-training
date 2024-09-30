@@ -11,12 +11,14 @@ import { UsageSmogonService } from 'src/app/http/requests/usage-smogon/usage-smo
 import { MovesetSmogonService } from 'src/app/http/requests/moveset-smogon/moveset-smogon.service';
 import { AbilitiesService } from 'src/app/http/requests/abilities/abilities.service';
 import { PokemonService } from 'src/app/http/requests/pokemon/pokemon.service';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 @Component({
   selector: 'app-training-menu',
   templateUrl: './training-menu.page.html',
   styleUrls: ['./training-menu.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule]
+  imports: [IonicModule, MatButtonModule, CommonModule, MatCardModule]
 })
 export class TrainingMenuPage {
   score: { speedVS: any; speedQuiz: any; defOrDefSpe: any; } | undefined;
