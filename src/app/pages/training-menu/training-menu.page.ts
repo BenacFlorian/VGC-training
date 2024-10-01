@@ -70,6 +70,8 @@ export class TrainingMenuPage {
     this.localStorageService.removeItem('usagesDate');
     this.localStorageService.removeItem('topMoveset');
     this.localStorageService.removeItem('topMovesetDate'); 
+    this.localStorageService.removeItem('topPokemons');
+    this.localStorageService.removeItem('topPokemonsDate'); 
     this.localStorageService.removeItem('abilities');
     this.localStorageService.removeItem('abilitiesDate');
     from(db.pokemons.clear()).subscribe(() => {

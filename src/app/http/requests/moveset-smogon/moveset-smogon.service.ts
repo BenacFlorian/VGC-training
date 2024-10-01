@@ -4,6 +4,8 @@ import { Observable, catchError, from, map, switchMap, of, throwError, forkJoin 
 import { CapacitorHttp } from '@capacitor/core';
 import { UsageSmogonService } from '../usage-smogon/usage-smogon.service';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
+import { subMonths } from 'date-fns';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -57,8 +59,17 @@ export class MovesetSmogonService {
     }
 
     private findValidUrl(date: string, letter: string = 'z'): Observable<string> {
+        
         if (letter < 'a') {
-        return throwError(() => new Error('Aucune URL valide trouvée'));
+            // Créer une date à partir du paramètre date (format "2024-09"), puis enlever un mois
+            const [year, month] = date.split('-').map(Number);
+            if(year < 2024){
+            return throwError(() => new Error('Aucune URL valide trouvée'));
+            }
+            const parsedDate = new Date(year, month - 1); // Les mois sont indexés à partir de 0
+            const newDate = subMonths(parsedDate, 1);
+            const formattedDate = `${newDate.getFullYear()}-${String(newDate.getMonth() + 1).padStart(2, '0')}`;
+            return this.findValidUrl(formattedDate);
         }
 
         const url = `${this.baseUrl}/${date}/moveset/gen9vgc2024reg${letter}bo3-1760.txt`;
@@ -92,7 +103,8 @@ export class MovesetSmogonService {
             name: this.getName(pokemon[0]),
             abilities: this.getAbilities(pokemon[2]),
             items: this.getItems(pokemon[3]),
-            spread: this.getSpreadMeaningTab(spread),
+            spread,
+            spreadMeanings: this.getSpreadMeaningTab(spread),
             moves: this.getMoves(pokemon[5])
         };
     }

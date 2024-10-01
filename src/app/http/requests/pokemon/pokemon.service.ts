@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from '../../http.service';
 import { catchError, forkJoin, map, Observable, of, EMPTY, switchMap, from } from 'rxjs';
-import { FormattedPokemon } from '../usage-smogon/usage-smogon.service';
 import { UtilityService } from '../../../services/utility.service';
 import { LocalStorageService } from '../../../services/local-storage.service';
 import db from 'src/app/services/db.service';

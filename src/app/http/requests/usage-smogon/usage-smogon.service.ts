@@ -5,22 +5,15 @@ import { from, Observable, of, throwError } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { HttpService } from '../../http.service';
 import { CapacitorHttp } from '@capacitor/core';
+import { subMonths } from 'date-fns';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
-
-export interface FormattedPokemon {
-  name: string;
-  rankUse: string;
-  percentUse: number;
-  percentRealUsage: number;
-  rawUsage: number;
-}
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsageSmogonService {
   private baseUrl = 'https://www.smogon.com/stats/';
-  public usages: FormattedPokemon[] | undefined;
+  public usages: any[] | undefined;
 
   constructor(
     private httpService:HttpService,
@@ -28,7 +21,9 @@ export class UsageSmogonService {
     private localStorageService: LocalStorageService
   ) { }
 
-  getUsageData(): Observable<FormattedPokemon[]> {
+
+
+  getUsageData(): Observable<any[]> {
     const usages = this.localStorageService.getItem('usages');
     const usagesDate = this.localStorageService.getItem('usagesDate');
     const today = new Date();
@@ -36,8 +31,7 @@ export class UsageSmogonService {
     if (usages && usagesDateObj.setHours(0, 0, 0, 0) == today.setHours(0, 0, 0, 0)) {
       return of(usages);
     }
-    const date = new Date();
-    date.setMonth(date.getMonth() - 1);
+    const date = subMonths(new Date(), 1);
     const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
 
     return this.findValidUrl(formattedDate).pipe(
@@ -50,7 +44,15 @@ export class UsageSmogonService {
 
   private findValidUrl(date: string, letter: string = 'z'): Observable<string> {
     if (letter < 'a') {
-      return throwError(() => new Error('Aucune URL valide trouvée'));
+      // Créer une date à partir du paramètre date (format "2024-09"), puis enlever un mois
+      const [year, month] = date.split('-').map(Number);
+      if(year < 2024){
+        return throwError(() => new Error('Aucune URL valide trouvée'));
+      }
+      const parsedDate = new Date(year, month - 1); // Les mois sont indexés à partir de 0
+      const newDate = subMonths(parsedDate, 1);
+      const formattedDate = `${newDate.getFullYear()}-${String(newDate.getMonth() + 1).padStart(2, '0')}`;
+      return this.findValidUrl(formattedDate);
     }
 
     const url = `${this.baseUrl}${date}/gen9vgc2024reg${letter}bo3-1760.txt`;
@@ -69,8 +71,8 @@ export class UsageSmogonService {
 
   // ----------------------------------------------------------------------------------------------
 
-  private formatUsage(content: string): FormattedPokemon[] {
-    this.usages = content.split('\n').filter(this.isPokemonLine).map(line => this.formatPokemonLine(line)).filter((poke)=> poke.rawUsage > 1500);
+  private formatUsage(content: string): any[] {
+    this.usages = content.split('\n').filter(this.isPokemonLine).map(line => this.formatPokemonLine(line)).filter((poke)=> poke.rankUse <= 100);
     this.localStorageService.setItem('usages', this.usages);
     this.localStorageService.setItem('usagesDate', new Date());
     return this.usages;
@@ -81,7 +83,7 @@ export class UsageSmogonService {
     return regex.test(line.trim());
   }
 
-  private formatPokemonLine(line: string): FormattedPokemon {
+  private formatPokemonLine(line: string): any {
     const lineSplitted = line.trim().split('|');
     return {
       name: lineSplitted[2].trim(),

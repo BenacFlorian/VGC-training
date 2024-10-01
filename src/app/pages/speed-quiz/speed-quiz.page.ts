@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { SpeedQuizComponent } from 'src/app/components/speed-quiz/speed-quiz.component';
 import { PokemonService } from 'src/app/http/requests/pokemon/pokemon.service';
-import { FormattedPokemon, UsageSmogonService } from 'src/app/http/requests/usage-smogon/usage-smogon.service';
+import { UsageSmogonService } from 'src/app/http/requests/usage-smogon/usage-smogon.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
@@ -21,7 +21,7 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class SpeedQuizPage implements OnInit {
 
-  public pokemonTopUsage: FormattedPokemon[] = [];
+  public pokemonTopUsage: any[] = [];
   public poke: any;
   public isPokeLoaded: boolean = false;
   public score: any;
