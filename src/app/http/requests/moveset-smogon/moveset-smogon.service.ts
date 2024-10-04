@@ -37,6 +37,7 @@ export class MovesetSmogonService {
                 const topMoveset =  movesetData.filter((pokemon: any) => usageData.some((usagePokemon: any) => usagePokemon.name === pokemon.name));
                 this.localStorageService.setItem('topMoveset', topMoveset);
                 this.localStorageService.setItem('topMovesetDate', new Date());
+                console.log("topMoveset");
                 return topMoveset;
             })
         );

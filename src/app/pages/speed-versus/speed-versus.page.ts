@@ -64,9 +64,9 @@ export class SpeedVersusPage implements OnInit {
           this.pokemons = pokemons;
           const randomPokemons = this.utilityService.getTwoRandomPokemons(pokemons);
           this.pokeLeft = JSON.parse(randomPokemons?.[0].data);
-          this.pokeLeft.smogonStats = this.getSmogonStats(this.pokeLeft, topMoveset);
+          this.pokeLeft.smogonStats = this.utilityService.getSmogonStats(this.pokeLeft, topMoveset);
           this.pokeRight = JSON.parse(randomPokemons?.[1].data);
-          this.pokeRight.smogonStats = this.getSmogonStats(this.pokeRight, topMoveset);
+          this.pokeRight.smogonStats = this.utilityService.getSmogonStats(this.pokeRight, topMoveset);
           this.is2PokeLoaded = true;
         });
       },
@@ -77,18 +77,14 @@ export class SpeedVersusPage implements OnInit {
     });
   }
 
-  getSmogonStats(poke: any, formattedData: any[]): any {
-    const smogonStats = formattedData.find((pokemon) => this.utilityService.sanitizeName(pokemon.name.toLowerCase()) === poke.name.toLowerCase());
-    return smogonStats;
-  }
 
   public resetRequested(){
     this.is2PokeLoaded = false;
     const randomPokemons = this.utilityService.getTwoRandomPokemons(this.pokemons);
     this.pokeLeft = JSON.parse(randomPokemons?.[0].data);
-    this.pokeLeft.smogonStats = this.getSmogonStats(this.pokeLeft, this.topMoveset);
+    this.pokeLeft.smogonStats = this.utilityService.getSmogonStats(this.pokeLeft, this.topMoveset);
     this.pokeRight = JSON.parse(randomPokemons?.[1].data);
-    this.pokeRight.smogonStats = this.getSmogonStats(this.pokeRight, this.topMoveset);
+    this.pokeRight.smogonStats = this.utilityService.getSmogonStats(this.pokeRight, this.topMoveset);
     this.cdr.detectChanges();
     const speedVersusData = this.localStorageService.getItem('speedVersusData');
     this.score = speedVersusData.score;

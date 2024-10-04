@@ -22,6 +22,10 @@ export class UtilityService {
     if(name === 'tauros-paldea-aqua') return 'tauros-paldea-aqua-breed';
     return name;
   }
+  getSmogonStats(poke: any, formattedData: any[]): any {
+    const smogonStats = formattedData.find((pokemon) => this.sanitizeName(pokemon.name.toLowerCase()) === poke.name.toLowerCase());
+    return smogonStats;
+  }
   getAllAbilities(pokemonTopMoveset: any[]): any {
     const abilities: any[] = [];
     for(const pokemon of pokemonTopMoveset){

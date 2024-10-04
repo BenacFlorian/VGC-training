@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { calculate, Generations, Pokemon, Move } from '@smogon/calc';
+import { calculate, Generations, Pokemon, Move, Field } from '@smogon/calc';
 import { UtilityService } from 'src/app/services/utility.service';
 
 @Injectable({
@@ -76,7 +76,7 @@ export class CalcQuizComponentService {
     return effectiveness;
   }
 
-  calculateKO(attacker: any, defender: any, move: any): {
+  calculateKO(attacker: Pokemon, defender: Pokemon, move: any): {
     minDamage: number;
     maxDamage: number;
     result: 'KO' | '50-' | '50+';
@@ -86,31 +86,30 @@ export class CalcQuizComponentService {
     const gen = Generations.get(9);
 
     const attackerPokemon = new Pokemon(gen, attacker.name, {
-      nature: move.damage_class.name === 'special' ? 'Modest' : 'Adamant' ,
+      nature: this.utilityService.capitalizeFirstLetter(attacker.nature),
       ability: attacker.ability,
-      level: 50, // Utilise le niveau défini ou 50 par défaut
-      evs: { atk: 252, spa: 252, def: 252, spd: 252, hp: 252 },
+      level: 50, 
+      evs: attacker.evs,
+      ivs: attacker.ivs,
       item: this.formatItemName(attacker.item) // Utilise l'item s'il existe
     });
     delete attackerPokemon.abilityOn;
     
     const defenderPokemon = new Pokemon(gen, defender.name, {
-      nature: move.damage_class.name === 'special' ? 'Calm' : 'Bold',
+      nature: this.utilityService.capitalizeFirstLetter(defender.nature),
       ability: defender.ability,
-      level: 50, // Utilise le niveau défini ou 50 par défaut
-      item: this.formatItemName(defender.item), // Utilise l'item s'il existe
-      evs: { atk: 252, spa: 252, def: 252, spd: 252, hp: 252 }
+      evs: defender.evs,
+      ivs: defender.ivs,
+      level: 50, 
+      item: this.formatItemName(defender.item),
     });
     delete defenderPokemon.abilityOn;
-
-    console.log("---------------------------");
-    console.log(attackerPokemon);
-    console.log(defenderPokemon);
     const moveCalc = new Move(gen, move.name);
+    const field = new Field();
+    field.gameType = 'Doubles';
+    
 
-    const result = calculate(gen, attackerPokemon, defenderPokemon, moveCalc);
-    console.log(result);
-    console.log("---------------------------------------------------");
+    const result = calculate(gen, attackerPokemon, defenderPokemon, moveCalc, field);
 
     const minDamage = result.range()[0];
     const maxDamage = result.range()[1];
@@ -133,6 +132,6 @@ export class CalcQuizComponentService {
   }
 
   formatItemName(item: any) {
-    return item.names.find((name: any) => name.language.name === 'en')?.name || item.name;
+    return item?.names?.find((name: any) => name.language.name === 'en')?.name || item?.name || item || '';
   }
 }
