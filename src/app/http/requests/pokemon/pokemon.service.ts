@@ -73,6 +73,9 @@ export class PokemonService {
     const formattedName = this.utilityService.sanitizeName(name);
     return db.pokemons.where('name').equals(formattedName).first();
   }
+  public getPokemonsFromDB(): any {
+    return db.pokemons.toArray();
+  }
 
   insertPokemons(pokemons: any[]): Observable<number> {
     return from(

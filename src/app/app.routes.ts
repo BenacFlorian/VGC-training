@@ -15,6 +15,10 @@ export const routes: Routes = [
     pathMatch: 'full',
   },
   {
+    path: 'settings',
+    loadComponent: () => import('./pages/settings/settings.page').then( m => m.SettingsPage)
+  },
+  {
     path: 'training-menu',
     loadComponent: () => import('./pages/training-menu/training-menu.page').then( m => m.TrainingMenuPage)
   },
@@ -37,5 +41,9 @@ export const routes: Routes = [
   {
     path: 'calc-quiz',
     loadComponent: () => import('./pages/calc-quiz/calc-quiz.page').then( m => m.CalcQuizPage)
+  },
+  {
+    path: 'settings',
+    loadComponent: () => import('./pages/settings/settings.page').then( m => m.SettingsPage)
   },
 ];

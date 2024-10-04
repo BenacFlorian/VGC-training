@@ -72,7 +72,7 @@ export class UsageSmogonService {
   // ----------------------------------------------------------------------------------------------
 
   private formatUsage(content: string): any[] {
-    this.usages = content.split('\n').filter(this.isPokemonLine).map(line => this.formatPokemonLine(line)).filter((poke)=> poke.rankUse <= 100);
+    this.usages = content.split('\n').filter(this.isPokemonLine).map(line => this.formatPokemonLine(line)).filter((poke)=> poke.rankUse <= 150);
     this.localStorageService.setItem('usages', this.usages);
     this.localStorageService.setItem('usagesDate', new Date());
     return this.usages;

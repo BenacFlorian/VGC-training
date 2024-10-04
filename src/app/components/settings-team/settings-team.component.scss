@@ -1,0 +1,21 @@
+.pokemon-item {
+  display: flex;
+  align-items: center;
+  height: 80px; // Hauteur de chaque ligne
+}
+
+.pokemon-image {
+    margin-right: 10px; // Espace entre l'image et le nom
+    position: absolute;
+    left: 7%;
+    bottom: 0;
+}
+
+.pokemon-name {
+  line-height: 80px; // Alignement vertical avec l'image
+}
+
+mat-list-item {
+    height: 80px;
+    border-bottom: #c0c0c0 solid 1px;
+}

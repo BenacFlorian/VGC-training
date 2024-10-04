@@ -1,0 +1,16 @@
+.row {
+//   display: flex;
+  align-items: flex-start; // Aligne les éléments en haut
+}
+
+.w-25, .w-50 {
+  vertical-align: top; // Assure que les éléments sont alignés en haut
+}
+
+.pokemon-image, .pokemon-name, .mat-form-field {
+  display: inline-block;
+  vertical-align: top; // Assure que les éléments sont alignés en haut
+}
+.w-35 {
+  width: 35%;
+}

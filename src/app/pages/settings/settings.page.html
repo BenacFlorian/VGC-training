@@ -1,0 +1,27 @@
+<div class="container">  
+  <ion-content [fullscreen]="true">  
+    <div id="container">
+      <mat-card class="card  ml-2 mr-2">   
+
+        <mat-card-header>
+          <mat-card-title class="text-center">
+            Settings
+          </mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+          <div *ngIf="!settingsOpen.teams">
+            <comp-settings-list
+              (itemClicked)="onItemClick($event)"
+            ></comp-settings-list>
+          </div>
+          <div *ngIf="settingsOpen.teams">
+            <comp-settings-team
+              (goToSettings)="onGoToSettings()"
+            ></comp-settings-team>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </ion-content>
+</div>

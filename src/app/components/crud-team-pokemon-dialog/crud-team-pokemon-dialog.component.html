@@ -1,0 +1,150 @@
+<form [formGroup]="form">
+  <div class="row" *ngIf="pokemon">
+
+    <div class="w-60 d-inline-block">
+      <div class="w-100">
+        <div class="w-40 d-inline-block pt-4 pl-2">
+          <img [src]="pokemon.imageUrl" alt="{{pokemon.name}}" width="80" height="80" class="pokemon-image p-1">
+        </div>
+        <div class="w-50 d-inline-block" style="padding-top: 15%;">
+          <span class="pokemon-name text-left" *ngIf="!!pokemon.name">{{pokemon.name}}</span>
+        </div>
+      </div>
+      <div class="w-100">
+        <div class="w-40 d-inline-block pt-2 pl-2">
+          <img [src]="getItem(form.get('item')?.value)?.sprites.default" alt="{{form.get('item')?.value}}" width="40" height="40" class="pokemon-image p-1 d-inline-block pl-5" *ngIf="isValidItem(form.get('item')?.value)"style="margin-left: 40%;">
+        </div>
+        <div class="w-50 d-inline-block" style="padding-top: 8%;">
+          <span class="pokemon-name text-left d-inline-block" *ngIf="isValidItem(form.get('item')?.value)">{{form.get('item')?.value}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="w-35 d-inline-block mt-3">
+      <div class="row p-1" *ngIf="isValidMove(form.get('move1')?.value)">
+        <span class="p-1">{{form.get('move1')?.value}}</span>
+      </div>
+      <div class="row p-1" *ngIf="isValidMove(form.get('move2')?.value)">
+        <span class="p-1">{{form.get('move2')?.value}}</span>
+      </div>
+      <div class="row p-1" *ngIf="isValidMove(form.get('move3')?.value)">
+        <span class="p-1">{{form.get('move3')?.value}}</span>
+      </div>
+      <div  class="row p-1" *ngIf="isValidMove(form.get('move4')?.value)">
+        <span class="p-1">{{form.get('move4')?.value}}</span>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="pokemon">
+    <div class="row pt-1">
+      <span class="pokemon-name text-left ml-4 mb-4" *ngIf="!!spread">{{spread}}</span>
+    </div>
+  </div>
+  <div class="row" *ngIf="!pokemon">
+    <mat-form-field class="pb-0 pl-5 pt-5 pr-5">
+      <mat-label>Choose a Pokémon</mat-label>
+      <input type="text" placeholder="Pick one" aria-label="Number" matInput formControlName="pokemon" [matAutocomplete]="auto" >
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChange($event)">
+        <mat-option *ngFor="let pokemon of filteredPokemons | async" [value]="pokemon.name">
+          <img [src]="pokemon.imageUrl" alt="{{pokemon.name}}" width="25" height="25" class="mr-2">
+          <span> {{pokemon.name}}</span>
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </div>
+  <div class="row" *ngIf="pokemon && filteredItems && !isValidItem(form.get('item')?.value)">
+    <mat-form-field class="pb-0 pl-5 pt-3 pr-5">
+      <mat-label>Item</mat-label>
+      <input type="text" placeholder="Pick one" aria-label="Number" matInput formControlName="item" [matAutocomplete]="auto" >
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let item of filteredItems | async" [value]="item.name">
+          <span> {{item.name}}</span>
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <mat-form-field class="pb-0 pl-5 pt-3 pr-5" *ngIf="pokemon && moves && !isValidMove(form.get('move1')?.value) && isValidItem(form.get('item')?.value)">
+      <mat-label>Move 1</mat-label>
+      <input type="text" placeholder="Pick one" aria-label="Number" matInput formControlName="move1" [matAutocomplete]="auto" >
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let move of filteredMoves1 | async" [value]="move.name">
+          <span> {{move.name}}</span>
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <mat-form-field class="pb-0 pl-5 pt-3 pr-5" *ngIf="pokemon && moves && isValidMove(form.get('move1')?.value) && !isValidMove(form.get('move2')?.value) && isValidItem(form.get('item')?.value)">
+      <mat-label>Move 2</mat-label>
+      <input type="text" placeholder="Pick one" aria-label="Number" matInput formControlName="move2" [matAutocomplete]="auto" >
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let move of pokemon.data.moves" [value]="move.move.name">
+          <span> {{move.move.name}}</span>
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <mat-form-field class="pb-0 pl-5 pt-3 pr-5" *ngIf="pokemon && moves && isValidMove(form.get('move1')?.value) && isValidMove(form.get('move2')?.value)&& !isValidMove(form.get('move3')?.value) && isValidItem(form.get('item')?.value)">
+      <mat-label>Move 3</mat-label>
+      <input type="text" placeholder="Pick one" aria-label="Number" matInput formControlName="move3" [matAutocomplete]="auto" >
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let move of pokemon.data.moves" [value]="move.move.name">
+          <span> {{move.move.name}}</span>
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <mat-form-field class="pb-0 pl-5 pt-3 pr-5" *ngIf="pokemon && moves && isValidMove(form.get('move1')?.value) && isValidMove(form.get('move2')?.value)&& isValidMove(form.get('move3')?.value) && !isValidMove(form.get('move4')?.value) && isValidItem(form.get('item')?.value)">
+      <mat-label>Move 4</mat-label>
+      <input type="text" placeholder="Pick one" aria-label="Number" matInput formControlName="move4" [matAutocomplete]="auto" >
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let move of pokemon.data.moves" [value]="move.move.name">
+          <span> {{move.move.name}}</span>
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </div> 
+  <div class="row"*ngIf="(!spread || spread === '') && pokemon && moves && isValidMove(form.get('move1')?.value) && isValidMove(form.get('move2')?.value)&& isValidMove(form.get('move3')?.value) && isValidMove(form.get('move4')?.value) && isValidItem(form.get('item')?.value)">
+    <div class="row d-block">
+      <mat-form-field class="pb-0 pl-5 pt-3 pr-5">
+        <mat-label>HP</mat-label>
+        <input type="number" matInput formControlName="hpStats" min="0" max="252" placeholder="Enter a value between 0 and 252">
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="pb-0 pl-5 pt-3 pr-5">
+        <mat-label>Att</mat-label>
+        <input type="number" matInput formControlName="attStats" min="0" max="252" placeholder="Enter a value between 0 and 252">
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="pb-0 pl-5 pt-3 pr-5">
+        <mat-label>Def</mat-label>
+        <input type="number" matInput formControlName="defStats" min="0" max="252" placeholder="Enter a value between 0 and 252">
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="pb-0 pl-5 pt-3 pr-5">
+        <mat-label>SpA</mat-label>
+        <input type="number" matInput formControlName="spAStats" min="0" max="252" placeholder="Enter a value between 0 and 252">
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="pb-0 pl-5 pt-3 pr-5">
+        <mat-label>SpD</mat-label>
+        <input type="number" matInput formControlName="spDStats" min="0" max="252" placeholder="Enter a value between 0 and 252">
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="pb-0 pl-5 pt-3 pr-5">
+        <mat-label>Spe</mat-label>
+        <input type="number" matInput formControlName="speStats" min="0" max="252" placeholder="Enter a value between 0 and 252">
+      </mat-form-field>
+    </div>
+    <div class="row float-right mr-5 mb-2 ">
+      <button mat-flat-button color="success" (click)="onSubmit()" [disabled]="isSpreadValid()">Submit</button>
+    </div>
+  </div>
+</form>

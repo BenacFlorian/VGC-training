@@ -13,6 +13,7 @@ import { Component } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
+import { ItemsService } from 'src/app/http/requests/items/items.service';
 
 @Component({
   selector: 'app-home',
@@ -30,7 +31,8 @@ export class HomePage {
     private pokemonService: PokemonService,
     private usageSmogonService: UsageSmogonService,
     private movesetSmogonService: MovesetSmogonService,
-    private abilitiesService: AbilitiesService
+    private abilitiesService: AbilitiesService,
+    private itemsService: ItemsService
   ) {}
 
   discoverPrograms() {
@@ -41,8 +43,9 @@ export class HomePage {
     forkJoin([
       this.usageSmogonService.getUsageData(),
       this.movesetSmogonService.getTopMoveset(),
-      this.abilitiesService.getAllAbilities()
-    ]).subscribe(async ([usage, moveset, abilities]) => {
+      this.abilitiesService.getAllAbilities(),
+      this.itemsService.fetchAndStoreItems()
+    ]).subscribe(async ([usage, moveset, abilities, items]) => {
       console.log("usage");
       this.pokemonService.getAllTopPokemon(usage).subscribe((pokemons) => {
         console.log("pokemons");

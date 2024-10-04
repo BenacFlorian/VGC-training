@@ -90,8 +90,6 @@ export class CalcQuizComponent implements OnInit {
     this.rightSide.name = this.sanitizeName(this.rightSide.name);
     const commonSpreadLeft = this.getEvsAndNatureAttacker(quizSetup.categoryAttack, this.leftSide);
     const commonSpreadRight = this.getEvsAndNatureDefender(quizSetup.categoryAttack, this.rightSide);
-    console.log(this.leftSide, this.rightSide);
-    console.log(commonSpreadLeft, commonSpreadRight);
     this.pokemonLeft = new Pokemon(9, this.leftSide.name, {
       moves: this.leftSide.moves.map((move: any) => move.name),
       ability: this.leftSide.ability?.name || undefined,
@@ -113,7 +111,6 @@ export class CalcQuizComponent implements OnInit {
   }
 
   private filterFocusSash(pokemon: any){
-    console.log(pokemon.item?.name);
     if(pokemon.item.name.toLowerCase() === 'focus-sash') return undefined;
     return pokemon.item?.name;
   }

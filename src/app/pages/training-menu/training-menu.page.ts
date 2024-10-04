@@ -21,7 +21,7 @@ import { MatCardModule } from '@angular/material/card';
   imports: [IonicModule, MatButtonModule, CommonModule, MatCardModule]
 })
 export class TrainingMenuPage {
-  score: { speedVS: any; speedQuiz: any; defOrDefSpe: any; } | undefined;
+  score: { speedVS: any; speedQuiz: any; defOrDefSpe: any; abilitiesQuiz: any; calcQuiz: any; } | undefined;
 
   constructor(private router: Router, private localStorageService: LocalStorageService, private usageSmogonService: UsageSmogonService, private movesetSmogonService: MovesetSmogonService, private abilitiesService: AbilitiesService, private pokemonService: PokemonService) {
     addIcons({ speedometer, timerOutline, barChartOutline });
@@ -41,6 +41,9 @@ export class TrainingMenuPage {
       calcQuiz: calcQuiz.score?.percentGoodAnswer
     };
     return score;
+  }
+  goToSettings(){
+    this.router.navigateByUrl('/settings');
   }
 
   goToSpeedVersus(){
