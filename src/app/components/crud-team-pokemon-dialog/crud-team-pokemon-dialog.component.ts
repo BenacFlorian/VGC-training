@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { PokemonService } from 'src/app/http/requests/pokemon/pokemon.service';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Pokemon, PokemonService } from 'src/app/http/requests/pokemon/pokemon.service';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { forkJoin, from, Observable, map } from 'rxjs';
 import { startWith } from 'rxjs/operators';
@@ -10,6 +10,8 @@ import { CommonModule } from '@angular/common'; // Importer CommonModule
 import { UtilityService } from 'src/app/services/utility.service';
 import { ItemsService } from 'src/app/http/requests/items/items.service';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { CrudTeamPokemonDialogService } from './crud-team-pokemon-dialog.service';
 @Component({
   selector: 'comp-crud-team-pokemon-dialog',
   templateUrl: './crud-team-pokemon-dialog.component.html',
@@ -18,6 +20,9 @@ import { MatButtonModule } from '@angular/material/button';
   imports: [MatFormFieldModule, MatInputModule, MatAutocompleteModule, ReactiveFormsModule, CommonModule, MatButtonModule] // Ajouter CommonModule ici
 })
 export class CrudTeamPokemonDialogComponent implements OnInit {
+
+  @Output() teamPokemonSubmitted: EventEmitter<any> = new EventEmitter<any>();
+
   pokemons: any[] = [];
   filteredPokemons: Observable<any[]> = new Observable();
   isPokemonLoaded: boolean = false;
@@ -35,6 +40,8 @@ export class CrudTeamPokemonDialogComponent implements OnInit {
     move2: new FormControl(),
     move3: new FormControl(),
     move4: new FormControl(),
+    ability: new FormControl(),
+    nature: new FormControl(),
     item: new FormControl(),
     hpStats: new FormControl(0),
     attStats: new FormControl(0),
@@ -46,9 +53,22 @@ export class CrudTeamPokemonDialogComponent implements OnInit {
 
   items: any[] = [];
   filteredItems: Observable<any[]> = new Observable();
-  constructor(private pokemonService: PokemonService, private utilityService: UtilityService, private itemsService: ItemsService) {}
+  abilities: any[] = [];
+  filteredAbilities: Observable<any[]> = new Observable();
+  filteredNatures: Observable<any[]> = new Observable();
+  isSpreadSubmitted: boolean = false;
+  natures: any[] = [];
+
+  constructor(
+    private crudTeamPokemonDialogService:CrudTeamPokemonDialogService, 
+    private pokemonService: PokemonService, 
+    private utilityService: UtilityService, 
+    private itemsService: ItemsService, 
+    private dialogRef: MatDialogRef<CrudTeamPokemonDialogComponent> 
+  ) {}
 
   ngOnInit() {
+    this.natures = this.crudTeamPokemonDialogService.getNatures();
     forkJoin([
       from(this.pokemonService.getPokemonsFromDB()),
       this.itemsService.fetchAndStoreItems()
@@ -72,23 +92,16 @@ export class CrudTeamPokemonDialogComponent implements OnInit {
     return item ? JSON.parse(item.data) : {};
   }
 
-  private _filterPokemons(value: string): any[] {
-    const filterValue = value.toLowerCase();
-    return this.pokemons.filter(pokemon => pokemon.name.toLowerCase().includes(filterValue));
-  }
-  private _filterMoves(value: string): any[] {
-    const filterValue = value.toLowerCase();
-    return this.moves.filter(move => move.name.toLowerCase().includes(filterValue));
-  }
-  private _filterItems(value: string): any[] {
-    const filterValue = value.toLowerCase();
-    return this.items.filter(item => item.name.toLowerCase().includes(filterValue));
-  }
-
   public isValidItem(item: any): boolean {
     if(!item) return false;
     const items = this.items.map(item => item.name);
     return items.includes(item);
+  }
+
+  public isValidAbility(ability: any): boolean {
+    if(!ability) return false;
+    const abilities = this.abilities.map(ability => ability.name);
+    return abilities.includes(ability);
   }
 
   public isValidMove(move: any): boolean {
@@ -99,57 +112,93 @@ export class CrudTeamPokemonDialogComponent implements OnInit {
 
   public isSpreadValid(): boolean {
     const { hpStats, attStats, defStats, spAStats, spDStats, speStats } = this.form.value;
-    return hpStats + attStats + defStats + spAStats + spDStats + speStats > 510;
+    return hpStats + attStats + defStats + spAStats + spDStats + speStats <= 510 && hpStats + attStats + defStats + spAStats + spDStats + speStats > 0;
   }
 
   onSelectionChange(event: any) {
-    console.log(event);
     const name = event.option.value;
     this.pokemon = this.pokemons.find(pokemon => pokemon.name === name);
     this.moves = this.pokemon.data.moves.map((move: any) => ({ name: move.move.name, data: move }));
+    this.abilities = this.pokemon.data.abilities.map((ability: any) => ({ name: ability.ability.name, data: ability }));
     this.isPokeChoosed = true;
   }
 
+  onSpreadSubmit(){
+    this.spread = this.crudTeamPokemonDialogService.formatSpread(this.form.value);
+    if(this.isSpreadValid()){
+      this.isSpreadSubmitted = true;
+    }
+  }
+
   onSubmit(){
-    this.spread = this.formatSpread(this.form.value)
+    this.dialogRef.close({
+      name: this.pokemon.name,
+      data: {
+        pokemon: this.pokemon,
+        moves: [
+          this.form.value.move1,
+          this.form.value.move2,
+          this.form.value.move3,
+          this.form.value.move4,
+        ],
+        ability: this.form.value.ability,
+        nature: this.form.value.nature,
+        item: this.form.value.item,
+      }
+    });
+    this.teamPokemonSubmitted.emit({
+      name: this.pokemon.name,
+      data: {
+        moves: [
+          this.form.value.move1,
+          this.form.value.move2,
+          this.form.value.move3,
+          this.form.value.move4,
+        ],
+        ability: this.form.value.ability,
+        nature: this.form.value.nature,
+        item: this.form.value.item,
+      }
+    })
     console.log(this.form.value);
   }
 
-  private formatSpread(spread: any): string{
-    const hp = !!spread.hpStats && spread.hpStats != 0 ? `Hp: ${spread.hpStats}` : '';
-    const att = !!spread.attStats && spread.attStats != 0 ? `Att: ${spread.attStats}` : '';
-    const def = !!spread.defStats && spread.defStats != 0 ? `Def: ${spread.defStats}` : '';
-    const spA = !!spread.spAStats && spread.spAStats != 0 ? `SpA: ${spread.spAStats}` : '';
-    const spD = !!spread.spDStats && spread.spDStats != 0 ? `SpD: ${spread.spDStats}` : '';
-    const spe = !!spread.speStats && spread.speStats != 0 ? `Spe: ${spread.speStats}` : '';
-    return `${hp} ${att} ${def} ${spA} ${spD} ${spe}`;
+  public isPokemonValid(): boolean{
+    return this.isSpreadSubmitted && this.pokemon && this.isValidMove(this.form.get('move1')?.value) && this.isValidMove(this.form.get('move2')?.value)&& this.isValidMove(this.form.get('move3')?.value) && this.isValidMove(this.form.get('move4')?.value) && this.isValidItem(this.form.get('item')?.value) && this.isValidAbility(this.form.get('ability')?.value)
   }
 
   private initEventForm(){
-
+    this.filteredNatures = this.form.get('nature')!.valueChanges.pipe(
+      startWith(''),
+      map(value => this.crudTeamPokemonDialogService._filterNatures(value, this.natures))
+    );
     this.filteredPokemons = this.form.get('pokemon')!.valueChanges.pipe(
       startWith(''),
-      map(value => this._filterPokemons(value))
+      map(value => this.crudTeamPokemonDialogService._filterPokemons(value, this.pokemons))
+    );
+    this.filteredAbilities = this.form.get('ability')!.valueChanges.pipe(
+      startWith(''),
+      map(value => this.crudTeamPokemonDialogService._filterAbilities(value, this.abilities))
     );
     this.filteredItems = this.form.get('item')!.valueChanges.pipe(
       startWith(''),
-      map(value => this._filterItems(value))
+      map(value => this.crudTeamPokemonDialogService._filterItems(value, this.items))
     );
     this.filteredMoves1 = this.form.get('move1')!.valueChanges.pipe(
       startWith(''),
-      map(value => this._filterMoves(value))
+      map(value => this.crudTeamPokemonDialogService._filterMoves(value, this.moves))
     );
     this.filteredMoves2 = this.form.get('move2')!.valueChanges.pipe(
       startWith(''),
-      map(value => this._filterMoves(value))
+      map(value => this.crudTeamPokemonDialogService._filterMoves(value, this.moves))
     );
     this.filteredMoves3 = this.form.get('move3')!.valueChanges.pipe(
       startWith(''),
-      map(value => this._filterMoves(value))
+      map(value => this.crudTeamPokemonDialogService._filterMoves(value, this.moves))
     );
     this.filteredMoves4 = this.form.get('move4')!.valueChanges.pipe(
       startWith(''),
-      map(value => this._filterMoves(value))
+      map(value => this.crudTeamPokemonDialogService._filterMoves(value, this.moves))
     );
   }
 }

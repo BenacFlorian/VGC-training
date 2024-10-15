@@ -7,7 +7,9 @@
           <img [src]="pokemon.imageUrl" alt="{{pokemon.name}}" width="80" height="80" class="pokemon-image p-1">
         </div>
         <div class="w-50 d-inline-block" style="padding-top: 15%;">
-          <span class="pokemon-name text-left" *ngIf="!!pokemon.name">{{pokemon.name}}</span>
+          <span class="pokemon-name text-left d-block" *ngIf="!!pokemon.name">{{pokemon.name}}</span>
+          <span class="pokemon-name text-left d-block pt-2" *ngIf="isValidAbility(form.get('ability')?.value)">{{form.get('ability')?.value}}</span>
+          <span class="pokemon-name text-left d-block pt-2" *ngIf="!!form.get('nature')?.value ">{{form.get('nature')?.value}}</span>
         </div>
       </div>
       <div class="w-100">
@@ -51,7 +53,18 @@
       </mat-autocomplete>
     </mat-form-field>
   </div>
-  <div class="row" *ngIf="pokemon && filteredItems && !isValidItem(form.get('item')?.value)">
+  <div class="row" *ngIf="pokemon && filteredAbilities && !isValidAbility(form.get('ability')?.value)">
+    <mat-form-field class="pb-0 pl-5 pt-3 pr-5">
+      <mat-label>Ability</mat-label>
+      <input type="text" placeholder="Pick one" aria-label="Number" matInput formControlName="ability" [matAutocomplete]="auto" >
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let ability of filteredAbilities | async" [value]="ability.name">
+          <span> {{ability.name}}</span>
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </div>
+  <div class="row" *ngIf="pokemon && filteredItems && isValidAbility(form.get('ability')?.value) && !isValidItem(form.get('item')?.value)">
     <mat-form-field class="pb-0 pl-5 pt-3 pr-5">
       <mat-label>Item</mat-label>
       <input type="text" placeholder="Pick one" aria-label="Number" matInput formControlName="item" [matAutocomplete]="auto" >
@@ -63,7 +76,7 @@
     </mat-form-field>
   </div>
   <div class="row">
-    <mat-form-field class="pb-0 pl-5 pt-3 pr-5" *ngIf="pokemon && moves && !isValidMove(form.get('move1')?.value) && isValidItem(form.get('item')?.value)">
+    <mat-form-field class="pb-0 pl-5 pt-3 pr-5" *ngIf="pokemon && moves && !isValidMove(form.get('move1')?.value) && isValidAbility(form.get('ability')?.value) && isValidItem(form.get('item')?.value)">
       <mat-label>Move 1</mat-label>
       <input type="text" placeholder="Pick one" aria-label="Number" matInput formControlName="move1" [matAutocomplete]="auto" >
       <mat-autocomplete #auto="matAutocomplete">
@@ -74,7 +87,7 @@
     </mat-form-field>
   </div>
   <div class="row">
-    <mat-form-field class="pb-0 pl-5 pt-3 pr-5" *ngIf="pokemon && moves && isValidMove(form.get('move1')?.value) && !isValidMove(form.get('move2')?.value) && isValidItem(form.get('item')?.value)">
+    <mat-form-field class="pb-0 pl-5 pt-3 pr-5" *ngIf="pokemon && moves && isValidMove(form.get('move1')?.value) && !isValidMove(form.get('move2')?.value) && isValidItem(form.get('item')?.value) && isValidAbility(form.get('ability')?.value)">
       <mat-label>Move 2</mat-label>
       <input type="text" placeholder="Pick one" aria-label="Number" matInput formControlName="move2" [matAutocomplete]="auto" >
       <mat-autocomplete #auto="matAutocomplete">
@@ -85,7 +98,7 @@
     </mat-form-field>
   </div>
   <div class="row">
-    <mat-form-field class="pb-0 pl-5 pt-3 pr-5" *ngIf="pokemon && moves && isValidMove(form.get('move1')?.value) && isValidMove(form.get('move2')?.value)&& !isValidMove(form.get('move3')?.value) && isValidItem(form.get('item')?.value)">
+    <mat-form-field class="pb-0 pl-5 pt-3 pr-5" *ngIf="pokemon && moves && isValidMove(form.get('move1')?.value) && isValidMove(form.get('move2')?.value)&& !isValidMove(form.get('move3')?.value) && isValidItem(form.get('item')?.value) && isValidAbility(form.get('ability')?.value)">
       <mat-label>Move 3</mat-label>
       <input type="text" placeholder="Pick one" aria-label="Number" matInput formControlName="move3" [matAutocomplete]="auto" >
       <mat-autocomplete #auto="matAutocomplete">
@@ -96,7 +109,7 @@
     </mat-form-field>
   </div>
   <div class="row">
-    <mat-form-field class="pb-0 pl-5 pt-3 pr-5" *ngIf="pokemon && moves && isValidMove(form.get('move1')?.value) && isValidMove(form.get('move2')?.value)&& isValidMove(form.get('move3')?.value) && !isValidMove(form.get('move4')?.value) && isValidItem(form.get('item')?.value)">
+    <mat-form-field class="pb-0 pl-5 pt-3 pr-5" *ngIf="pokemon && moves && isValidMove(form.get('move1')?.value) && isValidMove(form.get('move2')?.value)&& isValidMove(form.get('move3')?.value) && !isValidMove(form.get('move4')?.value) && isValidItem(form.get('item')?.value) && isValidAbility(form.get('ability')?.value)">
       <mat-label>Move 4</mat-label>
       <input type="text" placeholder="Pick one" aria-label="Number" matInput formControlName="move4" [matAutocomplete]="auto" >
       <mat-autocomplete #auto="matAutocomplete">
@@ -106,7 +119,7 @@
       </mat-autocomplete>
     </mat-form-field>
   </div> 
-  <div class="row"*ngIf="(!spread || spread === '') && pokemon && moves && isValidMove(form.get('move1')?.value) && isValidMove(form.get('move2')?.value)&& isValidMove(form.get('move3')?.value) && isValidMove(form.get('move4')?.value) && isValidItem(form.get('item')?.value)">
+  <div class="row"*ngIf="(!spread || spread === '') && pokemon && moves && isValidMove(form.get('move1')?.value) && isValidMove(form.get('move2')?.value)&& isValidMove(form.get('move3')?.value) && isValidMove(form.get('move4')?.value) && isValidItem(form.get('item')?.value) && isValidAbility(form.get('ability')?.value)">
     <div class="row d-block">
       <mat-form-field class="pb-0 pl-5 pt-3 pr-5">
         <mat-label>HP</mat-label>
@@ -144,7 +157,21 @@
       </mat-form-field>
     </div>
     <div class="row float-right mr-5 mb-2 ">
-      <button mat-flat-button color="success" (click)="onSubmit()" [disabled]="isSpreadValid()">Submit</button>
+      <button mat-flat-button color="success" (click)="onSpreadSubmit()" [disabled]="!isSpreadValid()">Submit spread</button>
     </div>
+  </div>
+  <div class="row" *ngIf="!form.get('nature')?.value && isSpreadSubmitted && pokemon && moves && isValidMove(form.get('move1')?.value) && isValidMove(form.get('move2')?.value)&& isValidMove(form.get('move3')?.value) && isValidMove(form.get('move4')?.value) && isValidItem(form.get('item')?.value) && isValidAbility(form.get('ability')?.value)">
+    <mat-form-field class="pb-0 pl-5 pt-3 pr-5">
+      <mat-label>Nature</mat-label>
+      <input type="text" placeholder="Pick one" aria-label="Number" matInput formControlName="nature" [matAutocomplete]="auto" >
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let nature of filteredNatures | async" [value]="nature.name">
+          <span> {{nature.label}}</span>
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </div>
+  <div class="row float-right mr-5 mb-2" *ngIf="isPokemonValid()">
+    <button mat-flat-button color="success" (click)="onSubmit()">Submit Pokemon</button>
   </div>
 </form>

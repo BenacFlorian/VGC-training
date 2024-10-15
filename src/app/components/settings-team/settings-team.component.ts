@@ -10,6 +10,9 @@ class Pokemon {
   imageUrl: string = '/assets/unknownPokemon.png';
   moves?: string[] = [];
   item: string = '';
+  ability: string = '';
+  nature: string = '';
+  isDefined: boolean = false;
 }
 
 @Component({
@@ -48,9 +51,28 @@ export class SettingsTeamComponent implements OnInit {
     this.goToSettings.emit();
   }
 
-  openDialog() {
+  openDialog(pokemon: Pokemon) {
+    if(pokemon.isDefined) {
+      return;
+    }
     const dialogRef = this.dialog.open(CrudTeamPokemonDialogComponent, {
       width: '90%', 
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const indexNotDefined = this.team.findIndex(pokemon => !pokemon.isDefined);
+        if(indexNotDefined !== -1) {
+          const poke = this.team[indexNotDefined];
+          poke.name = result.name;
+          poke.moves = result.data.moves;
+          poke.item = result.data.item;
+          poke.ability = result.data.ability;
+          poke.nature = result.data.nature;
+          poke.imageUrl = result.data.pokemon.imageUrl;
+          this.team[indexNotDefined] = poke;
+          this.team[indexNotDefined].isDefined = true;
+        }
+      }
     });
   } 
 }

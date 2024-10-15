@@ -8,6 +8,7 @@ export class UtilityService {
     return elements[Math.floor(Math.random() * elements.length)];
   }
   sanitizeName(name: any) {
+    // if(name.includes('maushold') || name.includes('palafin') ) debugger;
     if(name === 'basculegion') return 'basculegion-male';
     if(name === 'basculegion-f') return 'basculegion-female';
     if(name === 'indeedee-f') return 'indeedee-female';
@@ -15,9 +16,9 @@ export class UtilityService {
     if(name === 'lycanroc') return 'lycanroc-midday';
     if(name === 'mimikyu') return 'mimikyu-disguised';
     if(name === 'toxtricity') return 'toxtricity-amped';
-    if(name === 'tatsugiri') return 'tatsugiri-curly';
-    if(name === 'maushold') return 'maushold-family-of-four';
-    if(name === 'palafin') return 'palafin-zero';
+    // if(name === 'tatsugiri') return 'tatsugiri-curly';
+    // if(name === 'maushold') return 'maushold-family-of-four';
+    // if(name === 'palafin') return 'palafin-zero';
     if(name === 'tauros-paldea-blaze') return 'tauros-paldea-blaze-breed';
     if(name === 'tauros-paldea-aqua') return 'tauros-paldea-aqua-breed';
     return name;

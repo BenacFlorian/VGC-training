@@ -26,7 +26,7 @@ export class AppDatabase extends Dexie {
     // Configuration de la version de la base de données et des tables
     this.version(1).stores({
       pokemons: '++id,name,data', // `++id` indique que l'id est auto-incrémenté
-      teamPokemons: '++id,name,data', // `++id` indique que l'id est auto-incrémenté
+      teamPokemons: '++id,index,name,data', // `++id` indique que l'id est auto-incrémenté
       items: '++id,name,data' // Nouvelle table `items` avec auto-incrémentation
     });
 
