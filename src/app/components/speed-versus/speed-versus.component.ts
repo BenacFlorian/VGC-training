@@ -30,6 +30,7 @@ export class SpeedVersusComponent implements OnInit {
   @Input() leftSide!: any;
   @Input() rightSide!: any;
   @Input() whichSpread: 'mostCommon' | 'max' = 'mostCommon';
+  @Input() whichPokemon: 'team' | 'random' = 'random';
   
   srcRight: string = '';
   srcLeft: string = '';

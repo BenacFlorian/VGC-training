@@ -31,8 +31,8 @@ export class TeamService {
     return from(db.teamPokemons.add(pokemon));
   }
 
-  deletePokemonFromTeam(id: number): Observable<void> {
-    return from(db.teamPokemons.delete(id));
+  clearPokemonFromTeam(): Observable<void> {
+    return from(db.teamPokemons.clear());
   }
 
   getTeam(): Observable<any[]> {

@@ -9,22 +9,6 @@
       Strike of {{score.strike}}
     </ion-col>
   </ion-row>
-  <!-- <ion-row class="w-100">
-    <ion-col size="4" class="column-speed-versus">
-      <ion-row class="align-items-start" style="margin-left: 10%;" *ngIf="isLeftSideMaxSpeed">
-        <p style="font-size: 18px;">*</p>
-      </ion-row>
-    </ion-col>
-    <ion-col size="4" class="column-speed-versus">
-      <ion-row class="align-items-start">
-      </ion-row>
-    </ion-col>
-    <ion-col size="4" class="column-speed-versus">
-      <ion-row class="align-items-start">
-        <p style="font-size: 18px;">*</p>
-      </ion-row>
-    </ion-col>
-  </ion-row> -->
 
   <ion-row class="w-100">
     <ion-col size="4" class="column-speed-versus" (click)="answer('left')">
@@ -46,7 +30,7 @@
 
   <ion-row class="pt-2">
     <ion-col size="4" class="column-speed-versus">
-      <p class="mt-3 speed text-center" *ngIf="isAnswered">{{speedLeft}} </p> <p style="font-size: 14px; margin-left: 5%;" *ngIf="isAnswered && whichSpread === 'mostCommon'">({{percentLeft}}%)</p> 
+      <p class="mt-3 speed text-center" *ngIf="isAnswered">{{speedLeft}} </p> <p style="font-size: 14px; margin-left: 5%;" *ngIf="isAnswered && whichSpread === 'mostCommon' && whichPokemon !== 'team'">({{percentLeft}}%)</p> 
     </ion-col>
     <ion-col size="4" class="column-speed-versus">
     </ion-col>

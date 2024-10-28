@@ -14,6 +14,8 @@ import { MovesetSmogonService } from 'src/app/http/requests/moveset-smogon/moves
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { ReactiveFormsModule, FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { TeamService } from 'src/app/db/team.service';
+import { radio } from 'ionicons/icons';
 
 @Component({
   selector: 'app-speed-versus',
@@ -28,11 +30,13 @@ export class SpeedVersusPage implements OnInit {
   is2PokeLoaded: boolean = false;
   score: any;
   pokemons: any[] = [];
+  pokemonsTeam: any[] = [];
   topMoveset: any[] = [];
   whichSpread: 'mostCommon' | 'max' = 'mostCommon';
   isSettingsOpen: boolean = false;
   form: FormGroup;
-
+  whichPokemon: 'team' | 'random' = 'team';
+  team: any[] = [];
   constructor(
     private pokemonService: PokemonService,
     private usageSmogonService: UsageSmogonService,
@@ -40,11 +44,13 @@ export class SpeedVersusPage implements OnInit {
     private cdr: ChangeDetectorRef,
     private localStorageService: LocalStorageService,
     private utilityService: UtilityService,
+    private teamService: TeamService, 
     private movesetSmogonService: MovesetSmogonService,
     private fb: FormBuilder
   ) {
     this.form = this.fb.group({
-      whichSpread: new FormControl(this.whichSpread)
+      whichSpread: new FormControl(this.whichSpread),
+      whichPokemon: new FormControl(this.whichPokemon)
     });
   }
 
@@ -55,18 +61,17 @@ export class SpeedVersusPage implements OnInit {
 
     forkJoin([
       this.usageSmogonService.getUsageData(),
-      this.movesetSmogonService.getTopMoveset()
+      this.movesetSmogonService.getTopMoveset(), 
+      this.teamService.getTeam()
     ])
     .subscribe({
-      next: ([formattedData, topMoveset]) => { 
+      next: ([formattedData, topMoveset, team]) => { 
         this.topMoveset = topMoveset;       
         this.pokemonService.getAllTopPokemon(formattedData).subscribe((pokemons) => {
           this.pokemons = pokemons;
-          const randomPokemons = this.utilityService.getTwoRandomPokemons(pokemons);
-          this.pokeLeft = JSON.parse(randomPokemons?.[0].data);
-          this.pokeLeft.smogonStats = this.utilityService.getSmogonStats(this.pokeLeft, topMoveset);
-          this.pokeRight = JSON.parse(randomPokemons?.[1].data);
-          this.pokeRight.smogonStats = this.utilityService.getSmogonStats(this.pokeRight, topMoveset);
+          this.team = team;
+          this.initData();
+          
           this.is2PokeLoaded = true;
         });
       },
@@ -80,11 +85,7 @@ export class SpeedVersusPage implements OnInit {
 
   public resetRequested(){
     this.is2PokeLoaded = false;
-    const randomPokemons = this.utilityService.getTwoRandomPokemons(this.pokemons);
-    this.pokeLeft = JSON.parse(randomPokemons?.[0].data);
-    this.pokeLeft.smogonStats = this.utilityService.getSmogonStats(this.pokeLeft, this.topMoveset);
-    this.pokeRight = JSON.parse(randomPokemons?.[1].data);
-    this.pokeRight.smogonStats = this.utilityService.getSmogonStats(this.pokeRight, this.topMoveset);
+    this.initData();
     this.cdr.detectChanges();
     const speedVersusData = this.localStorageService.getItem('speedVersusData');
     this.score = speedVersusData.score;
@@ -95,5 +96,23 @@ export class SpeedVersusPage implements OnInit {
 
   backToMenu(){
     this.router.navigateByUrl('/training-menu');
+  }
+
+  initData(){
+    let randomPokemons;
+    if(this.form.value.whichPokemon === 'team'){
+      this.pokemonsTeam = this.pokemons.filter(poke => this.team.map(poke => poke.name.toLowerCase()).includes(poke.name.toLowerCase()));
+      const randomTeam = this.utilityService.getTwoRandomPokemons(this.pokemonsTeam) || [];
+      const randomRandom = this.utilityService.getTwoRandomPokemons(this.pokemons) || [];
+      randomPokemons = [randomTeam[0], randomRandom[0]];
+    }else{
+      randomPokemons = this.utilityService.getTwoRandomPokemons(this.pokemons) || [];
+    }
+
+
+    this.pokeLeft = JSON.parse(randomPokemons?.[0].data);
+    this.pokeLeft.smogonStats = this.utilityService.getSmogonStats(this.pokeLeft, this.topMoveset);
+    this.pokeRight = JSON.parse(randomPokemons?.[1].data);
+    this.pokeRight.smogonStats = this.utilityService.getSmogonStats(this.pokeRight, this.topMoveset);
   }
 }

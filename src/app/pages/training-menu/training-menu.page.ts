@@ -13,6 +13,7 @@ import { AbilitiesService } from 'src/app/http/requests/abilities/abilities.serv
 import { PokemonService } from 'src/app/http/requests/pokemon/pokemon.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { TeamService } from 'src/app/db/team.service';
 @Component({
   selector: 'app-training-menu',
   templateUrl: './training-menu.page.html',
@@ -23,7 +24,7 @@ import { MatCardModule } from '@angular/material/card';
 export class TrainingMenuPage {
   score: { speedVS: any; speedQuiz: any; defOrDefSpe: any; abilitiesQuiz: any; calcQuiz: any; } | undefined;
 
-  constructor(private router: Router, private localStorageService: LocalStorageService, private usageSmogonService: UsageSmogonService, private movesetSmogonService: MovesetSmogonService, private abilitiesService: AbilitiesService, private pokemonService: PokemonService) {
+  constructor(private router: Router, private localStorageService: LocalStorageService, private usageSmogonService: UsageSmogonService, private movesetSmogonService: MovesetSmogonService, private abilitiesService: AbilitiesService, private pokemonService: PokemonService, private teamService: TeamService) {
     addIcons({ speedometer, timerOutline, barChartOutline });
   }
 
@@ -77,6 +78,7 @@ export class TrainingMenuPage {
     this.localStorageService.removeItem('topPokemonsDate'); 
     this.localStorageService.removeItem('abilities');
     this.localStorageService.removeItem('abilitiesDate');
+    this.teamService.clearPokemonFromTeam().subscribe();
     from(db.pokemons.clear()).subscribe(() => {
       forkJoin([
         this.usageSmogonService.getUsageData(),

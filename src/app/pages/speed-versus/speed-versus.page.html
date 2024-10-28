@@ -6,9 +6,14 @@
         <mat-card-content>
           <div class="score_content">
             <form [formGroup]="form">
-              <mat-button-toggle-group formControlName="whichSpread">
-                <mat-button-toggle value="mostCommon">Common spread</mat-button-toggle>
-                <mat-button-toggle value="max">Max speed</mat-button-toggle>
+              <mat-button-toggle-group formControlName="whichSpread" class="w-100">
+                <mat-button-toggle value="mostCommon" class="w-50">Common spread</mat-button-toggle>
+                <mat-button-toggle value="max" class="w-50">Max speed</mat-button-toggle>
+              </mat-button-toggle-group>
+
+              <mat-button-toggle-group formControlName="whichPokemon" class="mt-2 w-100">
+                <mat-button-toggle value="team" class="w-50">With team</mat-button-toggle>
+                <mat-button-toggle value="random" class="w-50">With random</mat-button-toggle>
               </mat-button-toggle-group>
             </form>
             <div class="row">
@@ -42,6 +47,7 @@
             [rightSide]="pokeRight"
             (resetRequested)="resetRequested()"
             [whichSpread]="form.value.whichSpread"
+            [whichPokemon]="form.value.whichPokemon"
           ></comp-speed-versus>
         </mat-card-content>
 
