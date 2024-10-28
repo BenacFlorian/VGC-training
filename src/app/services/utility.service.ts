@@ -16,9 +16,9 @@ export class UtilityService {
     if(name === 'lycanroc') return 'lycanroc-midday';
     if(name === 'mimikyu') return 'mimikyu-disguised';
     if(name === 'toxtricity') return 'toxtricity-amped';
-    // if(name === 'tatsugiri') return 'tatsugiri-curly';
-    // if(name === 'maushold') return 'maushold-family-of-four';
-    // if(name === 'palafin') return 'palafin-zero';
+    if(name === 'tatsugiri') return 'tatsugiri-curly';
+    if(name === 'maushold') return 'maushold-family-of-four';
+    if(name === 'palafin') return 'palafin-zero';
     if(name === 'tauros-paldea-blaze') return 'tauros-paldea-blaze-breed';
     if(name === 'tauros-paldea-aqua') return 'tauros-paldea-aqua-breed';
     return name;

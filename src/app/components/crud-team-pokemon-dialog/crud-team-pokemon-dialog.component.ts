@@ -160,7 +160,6 @@ export class CrudTeamPokemonDialogComponent implements OnInit {
         item: this.form.value.item,
       }
     })
-    console.log(this.form.value);
   }
 
   public isPokemonValid(): boolean{

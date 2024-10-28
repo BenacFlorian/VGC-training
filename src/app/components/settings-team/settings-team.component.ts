@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common'; // Importer CommonModule
 import { Router } from '@angular/router';
 import { CrudTeamPokemonDialogComponent } from '../crud-team-pokemon-dialog/crud-team-pokemon-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { TeamService } from 'src/app/db/team.service';
 class Pokemon {
   name: string = '';
   imageUrl: string = '/assets/unknownPokemon.png';
@@ -13,6 +14,7 @@ class Pokemon {
   ability: string = '';
   nature: string = '';
   isDefined: boolean = false;
+  data: any;
 }
 
 @Component({
@@ -28,12 +30,24 @@ export class SettingsTeamComponent implements OnInit {
   // { name: 'Pikachu', imageUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png', moves: ['Volt Crash', 'PistoVolt'], item: 'Potion' },
   team: Pokemon[] = [];
 
-  constructor(private router: Router, private dialog: MatDialog) {}
+  constructor(private teamService: TeamService, private dialog: MatDialog) {}
 
   ngOnInit() {
-    if(this.team.length === 0) {
-      this.team = this.initTeam()
-    }
+    this.team = this.initTeam();
+    this.teamService.getTeam().subscribe(team => {
+      if(this.team.length > 0) {
+        team.forEach(poke => {
+          this.team[poke.index].name = poke.name;
+          this.team[poke.index].moves = poke.data.moves;
+          this.team[poke.index].item = poke.data.item;
+          this.team[poke.index].ability = poke.data.ability;
+          this.team[poke.index].nature = poke.data.nature;
+          this.team[poke.index].isDefined = true;
+          this.team[poke.index].imageUrl = poke.data.pokemon.imageUrl;
+          this.team[poke.index].data = poke.data;
+        });
+      }
+    });
   }
 
   initTeam(): Pokemon[] {
@@ -69,8 +83,14 @@ export class SettingsTeamComponent implements OnInit {
           poke.ability = result.data.ability;
           poke.nature = result.data.nature;
           poke.imageUrl = result.data.pokemon.imageUrl;
+          poke.data = result.data;
           this.team[indexNotDefined] = poke;
           this.team[indexNotDefined].isDefined = true;
+          this.teamService.addPokemonToTeam({
+            index:indexNotDefined,
+            name:poke.name,
+            data:result.data
+          }).subscribe();
         }
       }
     });
