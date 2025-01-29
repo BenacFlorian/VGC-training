@@ -5,7 +5,7 @@ import { addIcons } from 'ionicons';
 import { speedometer, timerOutline, barChartOutline } from 'ionicons/icons';
 import { Router } from '@angular/router';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
-import db from 'src/app/services/db.service';
+import db from 'src/app/db/db.service';
 import { forkJoin, from } from 'rxjs';
 import { UsageSmogonService } from 'src/app/http/requests/usage-smogon/usage-smogon.service';
 import { MovesetSmogonService } from 'src/app/http/requests/moveset-smogon/moveset-smogon.service';
@@ -14,6 +14,7 @@ import { PokemonService } from 'src/app/http/requests/pokemon/pokemon.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { TeamService } from 'src/app/db/team.service';
+import { RulesetService } from 'src/app/db/ruleset.service';
 @Component({
   selector: 'app-training-menu',
   templateUrl: './training-menu.page.html',
@@ -24,7 +25,16 @@ import { TeamService } from 'src/app/db/team.service';
 export class TrainingMenuPage {
   score: { speedVS: any; speedQuiz: any; defOrDefSpe: any; abilitiesQuiz: any; calcQuiz: any; } | undefined;
 
-  constructor(private router: Router, private localStorageService: LocalStorageService, private usageSmogonService: UsageSmogonService, private movesetSmogonService: MovesetSmogonService, private abilitiesService: AbilitiesService, private pokemonService: PokemonService, private teamService: TeamService) {
+  constructor(
+    private router: Router, 
+    private localStorageService: LocalStorageService, 
+    private usageSmogonService: UsageSmogonService, 
+    private movesetSmogonService: MovesetSmogonService, 
+    private abilitiesService: AbilitiesService, 
+    private pokemonService: PokemonService, 
+    private teamService: TeamService,
+    private rulesetService: RulesetService
+  ) {
     addIcons({ speedometer, timerOutline, barChartOutline });
   }
 
@@ -79,6 +89,8 @@ export class TrainingMenuPage {
     this.localStorageService.removeItem('abilities');
     this.localStorageService.removeItem('abilitiesDate');
     this.teamService.clearPokemonFromTeam().subscribe();
+    this.rulesetService.initRuleset().subscribe();
+
     from(db.pokemons.clear()).subscribe(() => {
       forkJoin([
         this.usageSmogonService.getUsageData(),

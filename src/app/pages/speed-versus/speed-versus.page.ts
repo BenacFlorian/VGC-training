@@ -100,8 +100,13 @@ export class SpeedVersusPage implements OnInit {
 
   initData(){
     let randomPokemons;
-    if(this.form.value.whichPokemon === 'team'){
-      this.pokemonsTeam = this.pokemons.filter(poke => this.team.map(poke => poke.name.toLowerCase()).includes(poke.name.toLowerCase()));
+    this.pokemonsTeam = this.pokemons.filter(poke => this.team.map(poke => poke.name.toLowerCase()).includes(poke.name.toLowerCase()));
+    if(this.pokemonsTeam.length === 0 && this.form.value.whichPokemon === 'team'){
+      this.form.value.whichPokemon = 'random';
+      this.initData();
+      return;
+    }
+    if(this.form.value.whichPokemon === 'team' && this.pokemonsTeam.length > 0){
       const randomTeam = this.utilityService.getTwoRandomPokemons(this.pokemonsTeam) || [];
       const randomRandom = this.utilityService.getTwoRandomPokemons(this.pokemons) || [];
       randomPokemons = [randomTeam[0], randomRandom[0]];

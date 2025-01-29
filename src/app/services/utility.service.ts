@@ -8,19 +8,34 @@ export class UtilityService {
     return elements[Math.floor(Math.random() * elements.length)];
   }
   sanitizeName(name: any) {
-    // if(name.includes('maushold') || name.includes('palafin') ) debugger;
     if(name === 'basculegion') return 'basculegion-male';
     if(name === 'basculegion-f') return 'basculegion-female';
     if(name === 'indeedee-f') return 'indeedee-female';
     if(name === 'indeedee') return 'indeedee-male';
+    if(name === 'urshifu') return 'urshifu-single-strike';
+    if(name === 'raging bolt') return 'raging-bolt';
+    if(name === 'flutter mane') return 'flutter-mane';
+    if(name === 'iron hands') return 'iron-hands';
+    if(name === 'iron leaves') return 'iron-leaves';
+    if(name === 'iron valiant') return 'iron-valiant';
+    if(name === 'iron crown') return 'iron-crown';
+    if(name === 'iron boulder') return 'iron-boulder';
+    if(name === 'iron jugulis') return 'iron-jugulis';
+    if(name === 'roaring moon') return 'roaring-moon';
+    if(name === 'brute bonnet') return 'brute-bonnet';
+    if(name === 'iron treads') return 'iron-treads';
+    if(name === 'scream tail') return 'scream-tail';
     if(name === 'lycanroc') return 'lycanroc-midday';
     if(name === 'mimikyu') return 'mimikyu-disguised';
     if(name === 'toxtricity') return 'toxtricity-amped';
     if(name === 'tatsugiri') return 'tatsugiri-curly';
     if(name === 'maushold') return 'maushold-family-of-four';
     if(name === 'palafin') return 'palafin-zero';
+    if(name.includes('ogerpon') && name != 'ogerpon') return `${name.toLowerCase()}-mask`;
+    if(['tornadus', 'thundurus', 'landorus'].includes(name)) return `${name}-incarnate`;
     if(name === 'tauros-paldea-blaze') return 'tauros-paldea-blaze-breed';
     if(name === 'tauros-paldea-aqua') return 'tauros-paldea-aqua-breed';
+    if(name.includes('necrozma')) return name.replace('-wings','');
     return name;
   }
   getSmogonStats(poke: any, formattedData: any[]): any {

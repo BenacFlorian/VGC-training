@@ -18,13 +18,13 @@ export class CalcQuizService {
     private utilityService: UtilityService,
     private movesService: MovesService,
     private http: HttpClient
-  ) { }
+  ) {}
 
   getData(): Observable<any> {
     return this.movesetSmogonService.getTopMoveset().pipe(
       switchMap((pokemonList) => {
         const [pokemon1, pokemon2] = this.utilityService.getRandomElements(pokemonList, 2);
-        // const [pokemon1, pokemon2] = [pokemonList[103], pokemonList[1]]; // pour tester le support
+        // const [pokemon1, pokemon2] = [pokemonList[29], pokemonList[69]]; // pour tester le support
         return forkJoin([
           this.getPokemonWithMoves(pokemon1),
           this.getPokemonWithMoves(pokemon2)

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { from, Observable } from 'rxjs';
-import db from 'src/app/services/db.service';
+import db from 'src/app/db/db.service';
 
 export interface TeamPokemon {
   id?: number;

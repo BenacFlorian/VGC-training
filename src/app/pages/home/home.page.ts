@@ -14,6 +14,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { ItemsService } from 'src/app/http/requests/items/items.service';
+import { RulesetService } from 'src/app/db/ruleset.service';
 
 @Component({
   selector: 'app-home',
@@ -32,7 +33,8 @@ export class HomePage {
     private usageSmogonService: UsageSmogonService,
     private movesetSmogonService: MovesetSmogonService,
     private abilitiesService: AbilitiesService,
-    private itemsService: ItemsService
+    private itemsService: ItemsService,
+    private rulesetService: RulesetService
   ) {}
 
   discoverPrograms() {
@@ -40,17 +42,21 @@ export class HomePage {
   }
 
   ngOnInit() {
-    forkJoin([
-      this.usageSmogonService.getUsageData(),
-      this.movesetSmogonService.getTopMoveset(),
-      this.abilitiesService.getAllAbilities(),
-      this.itemsService.fetchAndStoreItems()
-    ]).subscribe(async ([usage, moveset, abilities, items]) => {
-      console.log("usage");
-      this.pokemonService.getAllTopPokemon(usage).subscribe((pokemons) => {
-        console.log("pokemons");
-        this.isDataLoaded = true;
-      });
-    });
+    this.rulesetService.initRuleset().subscribe(
+      () => {
+        forkJoin([
+          this.movesetSmogonService.getTopMoveset(),
+          this.usageSmogonService.getUsageData(),
+          this.abilitiesService.getAllAbilities(),
+          this.itemsService.fetchAndStoreItems(),
+        ]).subscribe(async ([usage, abilities, items]) => {
+          console.log("usage");
+          this.pokemonService.getAllTopPokemon(usage).subscribe((pokemons) => {
+            console.log("pokemons");
+            this.isDataLoaded = true;
+          });
+        });
+      }
+    );
   }
 }

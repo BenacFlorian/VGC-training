@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { catchError, map, mergeMap, toArray, switchMap } from 'rxjs/operators';
 import { of, from, Observable } from 'rxjs';
-import db, { Item } from 'src/app/services/db.service';
+import db, { Item } from 'src/app/db/db.service';
 
 @Injectable({
   providedIn: 'root'

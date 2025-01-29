@@ -7,6 +7,7 @@ import { Pokemon } from '@smogon/calc';
 import { UtilityService } from 'src/app/services/utility.service';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { MatButtonModule } from '@angular/material/button';
+import { SpeciesName } from '@smogon/calc/dist/data/interface';
 @Component({
   selector: 'comp-calc-quiz',
   templateUrl: './calc-quiz.component.html',
@@ -88,14 +89,14 @@ export class CalcQuizComponent implements OnInit {
   createPokemonSets(quizSetup: any){
     this.leftSide.name = this.sanitizeName(this.leftSide.name);
     this.rightSide.name = this.sanitizeName(this.rightSide.name);
-    const commonSpreadLeft = this.getEvsAndNatureAttacker(quizSetup.categoryAttack, this.leftSide);
-    const commonSpreadRight = this.getEvsAndNatureDefender(quizSetup.categoryAttack, this.rightSide);
+    const commonSpreadLeft = this.getEvsAndNatureAttacker(quizSetup.categoryAttack, this.leftSide) || {};
+    const commonSpreadRight = this.getEvsAndNatureDefender(quizSetup.categoryAttack, this.rightSide) || {};
     this.pokemonLeft = new Pokemon(9, this.leftSide.name, {
       moves: this.leftSide.moves.map((move: any) => move.name),
       ability: this.leftSide.ability?.name || undefined,
       item: this.leftSide.item?.name || undefined,
       nature: commonSpreadLeft.nature.toLowerCase(),
-      evs: { 'spa': commonSpreadLeft.specialAttack, 'atk': commonSpreadLeft.attack },
+      evs: { spa: commonSpreadLeft.specialAttack || 252, atk: commonSpreadLeft.attack || 252, hp: 0, def: 0, spd: 0 },
       ivs: { [quizSetup.categoryAttack === 'special' ? 'spa' : 'atk']: 31 },
       boosts: {}
     });
@@ -104,8 +105,8 @@ export class CalcQuizComponent implements OnInit {
       ability: this.rightSide.ability?.name || undefined,
       item: this.filterFocusSash(this.rightSide),
       nature: commonSpreadRight.nature.toLowerCase(),
-      evs: { 'spd':commonSpreadRight.specialDefense, 'def': commonSpreadRight.defense, 'hp': commonSpreadRight.hp },
-      ivs: { 'def':31, 'spd': 31, 'hp': 31 },
+      evs: { spd:commonSpreadRight.specialDefense || 252, def: commonSpreadRight.defense || 252, hp: commonSpreadRight.hp || 252, atk: 0, spa: 0 },
+      ivs: { def:31, spd: 31, hp: 31 },
       boosts: {}
     });
   }
@@ -209,19 +210,36 @@ export class CalcQuizComponent implements OnInit {
     if(this.items.right.name.toLowerCase().replace(/ /g, '-') === 'focus-sash') this.items.right = undefined;
   }
 
+
   sanitizeName(name: any) {
     if(name === 'basculegion-male') return 'basculegion';
     if(name === 'basculegion-female') return 'basculegion-f';
     if(name === 'indeedee-female') return 'indeedee-f';
     if(name === 'indeedee-male') return 'indeedee';
+    if(name === 'urshifu-single-strike') return 'urshifu';
+    if(name === 'raging-bolt') return 'raging bolt';
+    if(name === 'flutter-mane') return 'flutter mane';
+    if(name === 'iron-hands') return 'iron hands';
+    if(name === 'iron-leaves') return 'iron leaves';
+    if(name === 'iron-valiant') return 'iron valiant';
+    if(name === 'iron-crown') return 'iron crown';
+    if(name === 'iron-boulder') return 'iron boulder';
+    if(name === 'iron-jugulis') return 'iron jugulis';
+    if(name === 'roaring-moon') return 'roaring moon';
+    if(name === 'brute-bonnet') return 'brute bonnet';
+    if(name === 'iron-treads') return 'iron treads';
+    if(name === 'scream-tail') return 'scream tail';
     if(name === 'lycanroc-midday') return 'lycanroc';
     if(name === 'mimikyu-disguised') return 'mimikyu';
     if(name === 'toxtricity-amped') return 'toxtricity';
     if(name === 'tatsugiri-curly') return 'tatsugiri';
     if(name === 'maushold-family-of-four') return 'maushold';
     if(name === 'palafin-zero') return 'palafin';
+    if(name.includes('ogerpon') && name != 'ogerpon') return name.replace('-mask','');
+    if(['tornadus', 'thundurus', 'landorus'].includes(name.replace('-incarnate',''))) return name.replace('-incarnate','');
     if(name === 'tauros-paldea-blaze-breed') return 'tauros-paldea-blaze';
     if(name === 'tauros-paldea-aqua-breed') return 'tauros-paldea-aqua';
+    if(name.includes('necrozma')) return `${name}-wings`;
     return name;
   }
 

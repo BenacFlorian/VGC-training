@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Platform } from '@ionic/angular';
-import { from, Observable, of, throwError } from 'rxjs';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { from, Observable, of, throwError, take, switchMap, map, tap } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { HttpService } from '../../http.service';
 import { CapacitorHttp } from '@capacitor/core';
 import { subMonths } from 'date-fns';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
+import { RulesetService } from 'src/app/db/ruleset.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,12 +17,10 @@ export class UsageSmogonService {
   public usages: any[] | undefined;
 
   constructor(
-    private httpService:HttpService,
     private http: HttpClient,
+    private rulesetService: RulesetService,
     private localStorageService: LocalStorageService
   ) { }
-
-
 
   getUsageData(): Observable<any[]> {
     const usages = this.localStorageService.getItem('usages');
@@ -31,44 +30,35 @@ export class UsageSmogonService {
     if (usages && usagesDateObj.setHours(0, 0, 0, 0) == today.setHours(0, 0, 0, 0)) {
       return of(usages);
     }
-    const date = subMonths(new Date(), 1);
-    const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
 
-    return this.findValidUrl(formattedDate).pipe(
-      switchMap(url => {
-        return this.http.get(url, { responseType: 'text' })
-      }),
-      map(content => this.formatUsage(content))
-    );
-  }
-
-  private findValidUrl(date: string, letter: string = 'z'): Observable<string> {
-    if (letter < 'a') {
-      // Créer une date à partir du paramètre date (format "2024-09"), puis enlever un mois
-      const [year, month] = date.split('-').map(Number);
-      if(year < 2024){
-        return throwError(() => new Error('Aucune URL valide trouvée'));
-      }
-      const parsedDate = new Date(year, month - 1); // Les mois sont indexés à partir de 0
-      const newDate = subMonths(parsedDate, 1);
-      const formattedDate = `${newDate.getFullYear()}-${String(newDate.getMonth() + 1).padStart(2, '0')}`;
-      return this.findValidUrl(formattedDate);
-    }
-
-    const url = `${this.baseUrl}${date}/gen9vgc2024reg${letter}bo3-1760.txt`;
-
-    return from(CapacitorHttp.get({ url })).pipe(
-      switchMap(response => {
-        if (response.status >= 200 && response.status < 300) {
-          return of(url);
-        } else {
-          console.log('Error fetching URL:', url);
-          return this.findValidUrl(date, String.fromCharCode(letter.charCodeAt(0) - 1));
-        }
+    return this.getUrl().pipe(
+      switchMap(url => this.http.get(url, { responseType: 'text' })),
+      map(response => this.formatUsage(response)),
+      tap(formattedData => {
+        this.localStorageService.setItem('usages', formattedData);
+        this.localStorageService.setItem('usagesDate', new Date().toISOString());
       })
     );
   }
 
+  private getUrl(): Observable<string> {
+    return this.rulesetService.getActiveRuleset().pipe(
+        map((ruleset) => {
+            const date = subMonths(new Date(), 1);
+            let dateString = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+            if(this.isNewRuleset(ruleset)){
+              dateString = `${ruleset.previousEndDate.getFullYear()}-${String(ruleset.previousEndDate.getMonth() + 1).padStart(2, '0')}`;              
+            }
+            return `${this.baseUrl}${dateString}/gen9vgc2024reg${ruleset.id}bo3-1760.txt`;
+        })
+    );
+  }
+
+  private isNewRuleset(ruleset: any): boolean {
+    const todayMonth = `${new Date().getMonth()}${new Date().getFullYear()}`;
+    const rulesetMonth = `${ruleset.startDate.getMonth()}${ruleset.startDate.getFullYear()}`;
+    return todayMonth == rulesetMonth;
+  }
   // ----------------------------------------------------------------------------------------------
 
   private formatUsage(content: string): any[] {
